@@ -73,6 +73,22 @@ body::before{content:'';position:fixed;top:-20%;left:50%;transform:translateX(-5
         </button>
       </div>
     </div>
+    <div class="form-group" id="group-mode" style="display:none">
+      <label class="form-label">Vous facturez plutôt</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;">
+        <div id="mode-b2b" onclick="selectMode('b2b')" style="background:var(--raised);border:1px solid rgba(16,185,129,.4);border-radius:var(--r2);padding:.85rem;cursor:pointer;text-align:center;transition:all .2s;">
+          <div style="font-size:1.1rem;margin-bottom:.3rem;">🏢</div>
+          <div style="font-size:.75rem;font-weight:600;color:var(--text);">Des entreprises</div>
+          <div style="font-size:.62rem;color:var(--muted);margin-top:.2rem;">B2B — Pro</div>
+        </div>
+        <div id="mode-b2c" onclick="selectMode('b2c')" style="background:var(--raised);border:1px solid var(--border);border-radius:var(--r2);padding:.85rem;cursor:pointer;text-align:center;transition:all .2s;">
+          <div style="font-size:1.1rem;margin-bottom:.3rem;">👤</div>
+          <div style="font-size:.75rem;font-weight:600;color:var(--text);">Des particuliers</div>
+          <div style="font-size:.62rem;color:var(--muted);margin-top:.2rem;">B2C — Particulier</div>
+        </div>
+      </div>
+      <input type="hidden" id="selected-mode" value="b2b">
+    </div>
     <div class="form-group" id="group-confirm" style="display:none">
       <label class="form-label">Confirmer le mot de passe</label>
       <div style="position:relative;">
@@ -126,6 +142,7 @@ function switchMode(m) {
   document.getElementById('tab-login').classList.toggle('active', m === 'login');
   document.getElementById('tab-signup').classList.toggle('active', m === 'signup');
   document.getElementById('group-name').style.display    = m === 'signup' ? 'block' : 'none';
+  document.getElementById('group-mode').style.display     = m === 'signup' ? 'block' : 'none';
   document.getElementById('group-confirm').style.display = m === 'signup' ? 'block' : 'none';
   document.getElementById('btn-submit').textContent = m === 'login' ? 'Se connecter' : 'Créer mon compte';
   document.getElementById('error-box').style.display = 'none';
@@ -180,7 +197,7 @@ function handleSubmit() {
     sb.auth.signUp({
       email: email,
       password: pwd,
-      options: { data: { full_name: name } }
+      options: { data: { full_name: name, mode: document.getElementById('selected-mode').value } }
     }).then(function(result) {
       if (result.error) {
         setLoading(false);
@@ -210,6 +227,21 @@ function adminLogin() {
       sb.auth.signOut();
     }
   });
+}
+
+var selectedMode = 'b2b';
+function selectMode(m) {
+  selectedMode = m;
+  document.getElementById('selected-mode').value = m;
+  var b2b = document.getElementById('mode-b2b');
+  var b2c = document.getElementById('mode-b2c');
+  if (m === 'b2b') {
+    b2b.style.borderColor = 'rgba(16,185,129,.4)'; b2b.style.background = 'rgba(16,185,129,.06)';
+    b2c.style.borderColor = 'var(--border)'; b2c.style.background = 'var(--raised)';
+  } else {
+    b2c.style.borderColor = 'rgba(96,165,250,.4)'; b2c.style.background = 'rgba(96,165,250,.06)';
+    b2b.style.borderColor = 'var(--border)'; b2b.style.background = 'var(--raised)';
+  }
 }
 
 document.addEventListener('keydown', function(e) {
