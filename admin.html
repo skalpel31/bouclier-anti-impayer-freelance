@@ -276,12 +276,13 @@ body{font-family:'Geist',system-ui,sans-serif;background:var(--night);color:var(
 
     <!-- ── MÉTRIQUES SAAS ── -->
     <div class="tab-content" id="tab-saas">
-      <div class="kpi-grid g5">
+      <div class="kpi-grid" style="grid-template-columns:repeat(6,1fr);gap:1rem;margin-bottom:1.25rem;">
         <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">ARR</span><div class="kpi-icon ki-g">📈</div></div><div class="kpi-val green" id="saas-arr">0€</div></div>
         <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">MRR</span><div class="kpi-icon ki-p">💶</div></div><div class="kpi-val purple" id="saas-mrr">0€</div></div>
         <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">ARPU</span><div class="kpi-icon ki-b">👤</div></div><div class="kpi-val" id="saas-arpu">—</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Payants</span><div class="kpi-icon ki-g">✅</div></div><div class="kpi-val green" id="saas-paying">0</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Offerts</span><div class="kpi-icon ki-b">🎁</div></div><div class="kpi-val" style="color:#f9a8d4" id="saas-gifts">0</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Payants</span><div class="kpi-icon ki-g">✅</div></div><div class="kpi-val green" id="saas-paying">0</div><div class="kpi-delta">Génèrent du MRR</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Essai gratuit</span><div class="kpi-icon ki-gold">⏳</div></div><div class="kpi-val gold" id="saas-essai">0</div><div class="kpi-delta">1 mois offert</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Comptes offerts</span><div class="kpi-icon ki-b">🎁</div></div><div class="kpi-val" style="color:#f9a8d4" id="saas-gifts">0</div><div class="kpi-delta">Ne comptent pas MRR</div></div>
       </div>
       <div class="card">
         <div class="card-head"><div class="card-title">Répartition des plans</div></div>
@@ -568,17 +569,18 @@ function planMRR(plan, type) {
 // ── DASHBOARD ──
 function renderDashboard() {
   const totalUsers = adminUsers.length + 1; // +1 pour toi
-  const paying = adminUsers.filter(u => u.type === 'payant').length + 1;
+  const paying = adminUsers.filter(u => u.type === 'payant').length;
   const gifts = adminUsers.filter(u => u.type === 'offert').length;
+  const essai = adminUsers.filter(u => u.type === 'essai').length;
   const allF = getAllFactures();
-  const mrr = adminUsers.reduce((a,u) => a + planMRR(u.plan, u.type), 59); // toi = pro payant
+  const mrr = adminUsers.reduce((a,u) => a + planMRR(u.plan, u.type), 0); // admin ne compte pas dans le MRR
   const ca = allF.reduce((a,f) => a + Number(f.montant||0), 0);
   const legal = allF.filter(f => f.statut === 'huissier').length;
 
   document.getElementById('kpi-users').textContent = totalUsers;
   document.getElementById('kpi-users-d').textContent = totalUsers + ' compte(s) créé(s)';
   document.getElementById('kpi-paying').textContent = paying;
-  document.getElementById('kpi-paying-d').textContent = paying + ' abonnement(s) actif(s)';
+  document.getElementById('kpi-paying-d').textContent = paying > 0 ? paying + ' abonnement(s) payant(s)' : 'Aucun abonnement payant';
   document.getElementById('kpi-gifts').textContent = gifts;
   document.getElementById('kpi-factures').textContent = allF.length;
   document.getElementById('kpi-mrr').textContent = fmtEuro(mrr);
@@ -630,13 +632,13 @@ function renderUsers() {
 // ── ABONNEMENTS ──
 function renderAbonnements() {
   const solo = adminUsers.filter(u => u.plan==='solo' && u.type!=='offert').length;
-  const pro = adminUsers.filter(u => u.plan==='pro' && u.type!=='offert').length + 1; // +1 toi
+  const pro = adminUsers.filter(u => u.plan==='pro' && u.type!=='offert').length;
   const gifts = adminUsers.filter(u => u.type==='offert').length;
   document.getElementById('plan-solo').textContent = solo;
   document.getElementById('plan-pro').textContent = pro;
   document.getElementById('plan-gift').textContent = gifts;
-  document.getElementById('plan-solo-rev').textContent = fmtEuro(solo * 29) + '/mois';
-  document.getElementById('plan-pro-rev').textContent = fmtEuro(pro * 59) + '/mois';
+  document.getElementById('plan-solo-rev').textContent = solo > 0 ? fmtEuro(solo * 29) + '/mois' : '0€/mois';
+  document.getElementById('plan-pro-rev').textContent = pro > 0 ? fmtEuro(pro * 59) + '/mois' : '0€/mois';
 
   const allUsers = [{id:'admin', name:'Alex (toi)', email: ADMIN_EMAIL, plan:'pro', type:'payant'}, ...adminUsers];
   const el = document.getElementById('abonnements-list');
@@ -685,14 +687,18 @@ function renderAllFactures() {
 
 // ── SAAS ──
 function renderSaas() {
-  const mrr = adminUsers.reduce((a,u) => a + planMRR(u.plan, u.type), 59);
-  const paying = adminUsers.filter(u=>u.type==='payant').length + 1;
+  const mrr = adminUsers.reduce((a,u) => a + planMRR(u.plan, u.type), 0);
+  const paying = adminUsers.filter(u=>u.type==='payant').length;
+  const essaiCount = adminUsers.filter(u=>u.type==='essai').length;
   const gifts = adminUsers.filter(u=>u.type==='offert').length;
   document.getElementById('saas-arr').textContent = fmtEuro(mrr * 12);
   document.getElementById('saas-mrr').textContent = fmtEuro(mrr);
   document.getElementById('saas-paying').textContent = paying;
   document.getElementById('saas-gifts').textContent = gifts;
-  document.getElementById('saas-arpu').textContent = paying > 0 ? fmtEuro(Math.round(mrr/paying)) : '—';
+  var essaiEl = document.getElementById('saas-essai'); if(essaiEl) essaiEl.textContent = essaiCount||0;
+  document.getElementById('saas-gifts').textContent = gifts;
+  var essaiEl = document.getElementById('saas-essai'); if(essaiEl) essaiEl.textContent = essaiCount||0;
+  document.getElementById('saas-arpu').textContent = (paying > 0 && mrr > 0) ? fmtEuro(Math.round(mrr/paying)) : '—';
   const solo = adminUsers.filter(u=>u.plan==='solo'&&u.type!=='offert').length;
   const pro = adminUsers.filter(u=>u.plan==='pro'&&u.type!=='offert').length + 1;
   const total = solo + pro + (adminUsers.filter(u=>u.plan==='studio').length);
