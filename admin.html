@@ -9,107 +9,95 @@
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --night:#06080b;--deep:#0a0e14;--surface:#101620;--raised:#18212e;--lifted:#1e2a38;
-  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);
+  --night:#06080b;--deep:#0a0e14;--surface:#101620;--raised:#18212e;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.11);
   --text:#dce5f0;--muted:#5a6a7e;--subtle:#7d8fa3;
   --emerald:#10b981;--emerald2:#059669;--emerald-dim:rgba(16,185,129,0.09);
   --gold:#f0b429;--gold-dim:rgba(240,180,41,0.09);
   --red:#f87171;--red-dim:rgba(248,113,113,0.09);
   --blue:#60a5fa;--blue-dim:rgba(96,165,250,0.09);
   --purple:#a78bfa;--purple-dim:rgba(167,139,250,0.09);
-  --orange:#fb923c;--orange-dim:rgba(251,146,60,0.09);
-  --r:4px;--r2:8px;--r3:12px;
-  --sidebar:230px;
+  --r:4px;--r2:8px;--r3:12px;--sidebar:230px;
 }
 html,body{height:100%;overflow:hidden;}
-body{font-family:'Geist',system-ui,sans-serif;background:var(--night);color:var(--text);display:flex;-webkit-font-smoothing:antialiased;}
+body{font-family:'Geist',system-ui,sans-serif;background:var(--night);color:var(--text);display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;}
 
-/* admin top ribbon */
-.admin-ribbon{position:fixed;top:0;left:0;right:0;height:24px;background:linear-gradient(90deg,#7c3aed,#4f46e5);display:flex;align-items:center;justify-content:center;gap:1rem;z-index:999;font-size:.6rem;color:rgba(255,255,255,.8);letter-spacing:.08em;text-transform:uppercase;font-weight:500;}
+.ribbon{height:26px;background:linear-gradient(90deg,#7c3aed,#4f46e5);display:flex;align-items:center;justify-content:center;gap:.75rem;font-size:.62rem;color:rgba(255,255,255,.85);letter-spacing:.08em;text-transform:uppercase;font-weight:500;flex-shrink:0;}
 .ribbon-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+.app{display:flex;flex:1;overflow:hidden;}
 
 /* SIDEBAR */
-.sidebar{width:var(--sidebar);background:var(--deep);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;height:100vh;position:fixed;left:0;top:24px;z-index:50;padding-top:0;}
-.sb-top{padding:1rem .875rem .5rem;}
+.sidebar{width:var(--sidebar);background:var(--deep);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;}
+.sb-top{padding:1rem .875rem .5rem;flex:1;}
 .sb-brand{display:flex;align-items:center;gap:.65rem;padding:.5rem .5rem 1rem;border-bottom:1px solid var(--border);margin-bottom:.75rem;}
 .sb-brand-icon{width:30px;height:30px;border-radius:6px;background:linear-gradient(135deg,#7c3aed,#4f46e5);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;}
 .sb-brand-name{font-family:'Instrument Serif',serif;font-size:1.05rem;color:var(--text);}
-.sb-brand-tag{font-size:.55rem;background:rgba(124,58,237,.2);color:#a78bfa;border:1px solid rgba(167,139,250,.2);padding:.1rem .4rem;border-radius:3px;margin-left:.25rem;letter-spacing:.05em;text-transform:uppercase;}
-.sb-section{font-size:.57rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);padding:.75rem .5rem .3rem;opacity:.45;}
-.sb-item{display:flex;align-items:center;gap:.65rem;padding:.52rem .65rem;border-radius:6px;font-size:.73rem;color:var(--muted);cursor:pointer;transition:all .15s;text-decoration:none;border:none;background:none;width:100%;text-align:left;font-family:inherit;}
+.sb-tag{font-size:.52rem;background:rgba(124,58,237,.2);color:#a78bfa;border:1px solid rgba(167,139,250,.2);padding:.1rem .4rem;border-radius:3px;margin-left:.25rem;letter-spacing:.05em;text-transform:uppercase;}
+.sb-section{font-size:.57rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);padding:.75rem .5rem .3rem;opacity:.4;}
+.sb-item{display:flex;align-items:center;gap:.65rem;padding:.52rem .65rem;border-radius:6px;font-size:.73rem;color:var(--muted);cursor:pointer;transition:all .15s;border:none;background:none;width:100%;text-align:left;font-family:inherit;}
 .sb-item:hover{background:var(--raised);color:var(--text);}
-.sb-item.active{background:rgba(124,58,237,.12);color:#a78bfa;border:1px solid rgba(167,139,250,.15);}
+.sb-item.active{background:var(--purple-dim);color:var(--purple);border:1px solid rgba(167,139,250,.15);}
 .sb-item svg{width:14px;height:14px;flex-shrink:0;}
-.sb-badge{margin-left:auto;font-size:.55rem;font-weight:600;padding:.1rem .4rem;border-radius:999px;font-family:'Inter',sans-serif;}
-.sb-badge.red{background:var(--red);color:#fff;}
-.sb-badge.gold{background:var(--gold);color:#000;}
-.sb-spacer{flex:1;}
 .sb-bottom{padding:.75rem .875rem;border-top:1px solid var(--border);}
-.sb-user{display:flex;align-items:center;gap:.65rem;padding:.5rem;border-radius:var(--r2);cursor:pointer;}
-.sb-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#4f46e5);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#fff;font-weight:600;flex-shrink:0;font-family:'Inter',sans-serif;}
+.sb-user{display:flex;align-items:center;gap:.65rem;padding:.5rem;border-radius:var(--r2);}
+.sb-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#4f46e5);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#fff;font-weight:600;flex-shrink:0;}
 .sb-uname{font-size:.72rem;font-weight:600;color:var(--text);}
-.sb-urole{font-size:.6rem;color:#a78bfa;margin-top:1px;}
+.sb-urole{font-size:.6rem;color:var(--purple);}
+.btn-back{display:flex;align-items:center;gap:.5rem;padding:.45rem .65rem;border-radius:6px;font-size:.72rem;color:var(--muted);cursor:pointer;border:none;background:none;width:100%;font-family:inherit;margin-top:.5rem;}
+.btn-back:hover{background:var(--raised);color:var(--text);}
 
 /* MAIN */
-.main{margin-left:var(--sidebar);margin-top:24px;flex:1;height:calc(100vh - 24px);overflow-y:auto;display:flex;flex-direction:column;}
-.topbar{height:50px;background:var(--deep);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1.75rem;flex-shrink:0;position:sticky;top:0;z-index:40;}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{height:50px;background:var(--deep);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1.75rem;flex-shrink:0;}
 .page-title{font-size:.88rem;font-weight:600;color:var(--text);}
-.topbar-right{display:flex;align-items:center;gap:.75rem;}
 .status-pill{display:flex;align-items:center;gap:.4rem;font-size:.65rem;color:var(--emerald);background:var(--emerald-dim);border:1px solid rgba(16,185,129,.15);padding:.3rem .75rem;border-radius:999px;}
 .status-dot{width:6px;height:6px;border-radius:50%;background:var(--emerald);animation:pulse 2s infinite;}
-.btn-icon{width:32px;height:32px;border-radius:var(--r2);background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);}
-.btn-icon:hover{background:var(--raised);color:var(--text);}
-.btn-icon svg{width:14px;height:14px;}
-
-/* CONTENT */
-.content{padding:1.5rem 1.75rem;flex:1;}
+.content{flex:1;overflow-y:auto;padding:1.5rem 1.75rem;}
 .tab-content{display:none;}
 .tab-content.active{display:block;}
 
 /* KPI */
 .kpi-grid{display:grid;gap:1rem;margin-bottom:1.25rem;}
-.kpi-grid-4{grid-template-columns:repeat(4,1fr);}
-.kpi-grid-5{grid-template-columns:repeat(5,1fr);}
+.g4{grid-template-columns:repeat(4,1fr);}
+.g5{grid-template-columns:repeat(5,1fr);}
+.g3{grid-template-columns:repeat(3,1fr);}
 .kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:1rem 1.25rem;}
 .kpi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem;}
 .kpi-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);}
 .kpi-icon{width:28px;height:28px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:.8rem;}
-.ki-purple{background:var(--purple-dim);}
-.ki-green{background:var(--emerald-dim);}
+.ki-p{background:var(--purple-dim);}
+.ki-g{background:var(--emerald-dim);}
 .ki-gold{background:var(--gold-dim);}
-.ki-red{background:var(--red-dim);}
-.ki-blue{background:var(--blue-dim);}
-.ki-orange{background:var(--orange-dim);}
+.ki-r{background:var(--red-dim);}
+.ki-b{background:var(--blue-dim);}
 .kpi-val{font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:1.6rem;font-weight:700;letter-spacing:-0.03em;color:var(--text);line-height:1;}
 .kpi-val.green{color:var(--emerald);}
 .kpi-val.gold{color:var(--gold);}
 .kpi-val.red{color:var(--red);}
 .kpi-val.purple{color:var(--purple);}
-.kpi-val.blue{color:var(--blue);}
-.kpi-delta{font-size:.6rem;margin-top:.3rem;}
+.kpi-delta{font-size:.6rem;margin-top:.3rem;color:var(--muted);}
 .delta-up{color:var(--emerald);}
-.delta-down{color:var(--red);}
-.delta-neu{color:var(--muted);}
 
-/* tables */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;}
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-bottom:1.25rem;}
 .card-head{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1.1rem;border-bottom:1px solid var(--border);}
 .card-title{font-size:.78rem;font-weight:600;color:var(--text);}
 .card-sub{font-size:.63rem;color:var(--muted);margin-top:1px;}
 .card-body{padding:1.1rem;}
-.card-action{font-size:.67rem;color:var(--purple);background:none;border:none;cursor:pointer;font-family:inherit;}
-.card-action:hover{text-decoration:underline;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem;}
+.grid-32{display:grid;grid-template-columns:1.6fr 1fr;gap:1.25rem;margin-bottom:1.25rem;}
 
-.data-table{width:100%;}
+/* TABLE */
 .dt-head{display:grid;padding:.5rem 1.1rem;border-bottom:1px solid var(--border);}
 .dt-th{font-size:.58rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);}
-.dt-row{display:grid;padding:.7rem 1.1rem;align-items:center;border-bottom:1px solid var(--border);transition:background .12s;cursor:pointer;}
+.dt-row{display:grid;padding:.7rem 1.1rem;align-items:center;border-bottom:1px solid var(--border);transition:background .12s;}
 .dt-row:last-child{border-bottom:none;}
 .dt-row:hover{background:var(--raised);}
 .dt-name{font-size:.75rem;font-weight:500;color:var(--text);}
 .dt-meta{font-size:.6rem;color:var(--muted);margin-top:1px;}
-.dt-val{font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:.75rem;font-weight:600;letter-spacing:-0.02em;}
+.dt-val{font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:.75rem;font-weight:600;}
 
 .badge{display:inline-flex;align-items:center;gap:.3rem;font-size:.58rem;font-weight:500;padding:.2rem .55rem;border-radius:999px;letter-spacing:.03em;white-space:nowrap;}
 .b-green{background:rgba(16,185,129,.1);color:#34d399;border:1px solid rgba(16,185,129,.2);}
@@ -117,39 +105,22 @@ body{font-family:'Geist',system-ui,sans-serif;background:var(--night);color:var(
 .b-red{background:rgba(248,113,113,.1);color:#f87171;border:1px solid rgba(248,113,113,.2);}
 .b-blue{background:rgba(96,165,250,.1);color:#93c5fd;border:1px solid rgba(96,165,250,.2);}
 .b-purple{background:rgba(167,139,250,.1);color:#c4b5fd;border:1px solid rgba(167,139,250,.2);}
-.b-orange{background:rgba(251,146,60,.1);color:#fdba74;border:1px solid rgba(251,146,60,.2);}
+.b-gift{background:rgba(236,72,153,.1);color:#f9a8d4;border:1px solid rgba(236,72,153,.2);}
 .b-grey{background:var(--raised);color:var(--muted);border:1px solid var(--border2);}
 
-/* grid */
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem;}
-.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.25rem;margin-bottom:1.25rem;}
-.grid-32{display:grid;grid-template-columns:1.6fr 1fr;gap:1.25rem;margin-bottom:1.25rem;}
+/* FORMS */
+.form-group{margin-bottom:1rem;}
+.form-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.4rem;display:block;}
+.form-input{width:100%;background:var(--raised);border:1px solid var(--border);border-radius:var(--r2);padding:.6rem .85rem;color:var(--text);font-family:inherit;font-size:.78rem;outline:none;transition:border-color .15s;}
+.form-input:focus{border-color:var(--purple);}
+.form-input::placeholder{color:var(--muted);}
+.btn-purple{background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border:none;font-family:inherit;font-size:.78rem;font-weight:500;padding:.6rem 1.4rem;border-radius:var(--r2);cursor:pointer;transition:opacity .15s;}
+.btn-purple:hover{opacity:.9;}
+.btn-danger{background:transparent;color:var(--red);border:1px solid rgba(248,113,113,.25);font-family:inherit;font-size:.75rem;padding:.5rem 1rem;border-radius:var(--r2);cursor:pointer;width:100%;text-align:left;margin-bottom:.5rem;}
+.btn-ghost{background:transparent;color:var(--subtle);border:1px solid var(--border2);font-family:inherit;font-size:.73rem;padding:.4rem .85rem;border-radius:var(--r2);cursor:pointer;}
+.btn-ghost:hover{background:var(--raised);}
 
-/* chart */
-.chart-svg{width:100%;height:110px;}
-.chart-wrap{padding:.5rem 1.1rem 1.1rem;}
-.chart-labels{display:flex;justify-content:space-between;margin-top:.4rem;}
-.chart-label{font-size:.57rem;color:var(--muted);}
-.chart-legend{display:flex;gap:1rem;margin-top:.75rem;}
-.chart-leg-item{display:flex;align-items:center;gap:.35rem;font-size:.62rem;color:var(--muted);}
-.leg-dot{width:8px;height:8px;border-radius:50%;}
-
-/* ai log */
-.log-list{display:flex;flex-direction:column;max-height:340px;overflow-y:auto;}
-.log-item{display:flex;gap:.75rem;padding:.65rem 1.1rem;border-bottom:1px solid var(--border);align-items:flex-start;}
-.log-item:last-child{border-bottom:none;}
-.log-icon{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;flex-shrink:0;margin-top:1px;}
-.log-body{flex:1;}
-.log-text{font-size:.7rem;color:var(--subtle);line-height:1.5;}
-.log-text strong{color:var(--text);font-weight:500;}
-.log-time{font-size:.58rem;color:var(--muted);margin-top:.15rem;font-family:'Inter',sans-serif;}
-.log-level{font-size:.55rem;padding:.1rem .4rem;border-radius:3px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;flex-shrink:0;margin-top:2px;}
-.ll-info{background:var(--blue-dim);color:var(--blue);}
-.ll-warn{background:var(--gold-dim);color:var(--gold);}
-.ll-success{background:var(--emerald-dim);color:var(--emerald);}
-.ll-legal{background:var(--red-dim);color:var(--red);}
-
-/* toggle */
+/* TOGGLE */
 .toggle{width:36px;height:20px;border-radius:999px;background:var(--raised);border:1px solid var(--border2);position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;}
 .toggle.on{background:var(--purple);border-color:var(--purple);}
 .toggle::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:left .2s;}
@@ -158,18 +129,48 @@ body{font-family:'Geist',system-ui,sans-serif;background:var(--night);color:var(
 .toggle-info h4{font-size:.76rem;font-weight:500;color:var(--text);}
 .toggle-info p{font-size:.65rem;color:var(--muted);margin-top:1px;}
 
-/* form */
-.form-group{margin-bottom:1rem;}
-.form-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.4rem;display:block;}
-.form-input{width:100%;background:var(--raised);border:1px solid var(--border);border-radius:var(--r2);padding:.6rem .85rem;color:var(--text);font-family:inherit;font-size:.78rem;outline:none;transition:border-color .15s;}
-.form-input:focus{border-color:var(--purple);}
-.form-input::placeholder{color:var(--muted);}
-.btn-purple{background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border:none;font-family:inherit;font-size:.78rem;font-weight:500;padding:.6rem 1.4rem;border-radius:var(--r2);cursor:pointer;}
-.btn-danger{background:transparent;color:var(--red);border:1px solid rgba(248,113,113,.25);font-family:inherit;font-size:.75rem;padding:.5rem 1rem;border-radius:var(--r2);cursor:pointer;}
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:300;background:rgba(4,6,9,.88);backdrop-filter:blur(10px);align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--deep);border:1px solid var(--border2);border-radius:var(--r3);width:100%;max-width:500px;padding:2rem;position:relative;box-shadow:0 40px 80px rgba(0,0,0,.7);}
+.modal h3{font-family:'Instrument Serif',serif;font-size:1.4rem;margin-bottom:1.5rem;color:var(--text);}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.1rem;}
+.modal-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.modal-actions{display:flex;gap:.75rem;margin-top:1.5rem;justify-content:flex-end;}
+.btn-cancel{background:transparent;color:var(--muted);border:1px solid var(--border2);font-family:inherit;font-size:.78rem;padding:.6rem 1.25rem;border-radius:var(--r2);cursor:pointer;}
 
-/* progress */
-.progress-bar{height:4px;background:var(--raised);border-radius:999px;overflow:hidden;}
+/* LOG */
+.log-list{display:flex;flex-direction:column;max-height:380px;overflow-y:auto;}
+.log-item{display:flex;gap:.75rem;padding:.65rem 1.1rem;border-bottom:1px solid var(--border);align-items:flex-start;}
+.log-item:last-child{border-bottom:none;}
+.log-icon{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;flex-shrink:0;margin-top:1px;}
+.log-body{flex:1;}
+.log-text{font-size:.7rem;color:var(--subtle);line-height:1.5;}
+.log-text strong{color:var(--text);font-weight:500;}
+.log-time{font-size:.58rem;color:var(--muted);margin-top:.15rem;}
+.log-level{font-size:.55rem;padding:.1rem .4rem;border-radius:3px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;flex-shrink:0;margin-top:2px;}
+.ll-info{background:var(--blue-dim);color:var(--blue);}
+.ll-warn{background:var(--gold-dim);color:var(--gold);}
+.ll-ok{background:var(--emerald-dim);color:var(--emerald);}
+.ll-legal{background:var(--red-dim);color:var(--red);}
+.ll-gift{background:rgba(236,72,153,.1);color:#f9a8d4;}
+
+/* EMPTY */
+.empty-state{text-align:center;padding:3rem 1rem;}
+.empty-icon{font-size:2rem;margin-bottom:1rem;opacity:.4;}
+.empty-title{font-size:.82rem;font-weight:600;color:var(--subtle);margin-bottom:.35rem;}
+.empty-sub{font-size:.72rem;color:var(--muted);line-height:1.6;}
+
+/* PROGRESS */
+.progress-bar{height:5px;background:var(--raised);border-radius:999px;overflow:hidden;}
 .progress-fill{height:100%;border-radius:999px;}
+
+/* STATUS SYSTEM */
+.sys-row{display:flex;align-items:center;justify-content:space-between;padding:.65rem .75rem;background:var(--raised);border-radius:var(--r2);margin-bottom:.5rem;}
+.sys-name{font-size:.73rem;color:var(--subtle);}
+
+/* TOAST */
+#toast{display:none;position:fixed;bottom:1.5rem;right:1.5rem;background:#1c2530;border:1px solid rgba(167,139,250,.3);color:#e8edf2;padding:.75rem 1.25rem;border-radius:8px;font-size:.78rem;z-index:999;box-shadow:0 8px 24px rgba(0,0,0,.5);}
 
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
@@ -177,404 +178,623 @@ body{font-family:'Geist',system-ui,sans-serif;background:var(--night);color:var(
 </style>
 </head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const _sbAdmin = supabase.createClient('https://nqaerwhxyeogtykyajyt.supabase.co', 'sb_publishable_3_zaIZvW43rZ1exWyK1Pfg_LiAXd6fL');
-(async () => {
-  const { data } = await _sbAdmin.auth.getSession();
-  if(!data.session) { window.location.href = 'login.html'; return; }
-  const meta = data.session.user?.user_metadata;
-  if(meta?.role !== 'admin') { alert('Accès non autorisé.'); window.location.href = 'dashboard.html'; }
-})();
-async function adminLogout() {
-  await _sbAdmin.auth.signOut();
-  window.location.href = 'login.html';
-}
-</script>
 
-<!-- RIBBON -->
-<div class="admin-ribbon">
-  <div class="ribbon-dot"></div>
-  Super Admin — Bouclier Back-Office · Accès restreint
-</div>
+<div class="ribbon"><div class="ribbon-dot"></div>Super Admin — Bouclier Back-Office · Accès restreint</div>
 
+<div class="app">
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sb-top">
     <div class="sb-brand">
       <div class="sb-brand-icon">⚡</div>
-      <div>
-        <span class="sb-brand-name">Bouclier</span>
-        <span class="sb-brand-tag">Admin</span>
-      </div>
+      <div><span class="sb-brand-name">Bouclier</span><span class="sb-tag">Admin</span></div>
     </div>
     <div class="sb-section">Vue globale</div>
-    <button class="sb-item active" onclick="switchTab('overview')">
+    <button class="sb-item active" onclick="showTab('dashboard',this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
       Dashboard
     </button>
-    <button class="sb-item" onclick="switchTab('saas')">
+    <button class="sb-item" onclick="showTab('saas',this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
       Métriques SaaS
     </button>
     <div class="sb-section">Utilisateurs</div>
-    <button class="sb-item" onclick="switchTab('freelances')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      Freelances
-      <span class="sb-badge red">1 247</span>
+    <button class="sb-item" onclick="showTab('users',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      Comptes clients
     </button>
-    <button class="sb-item" onclick="switchTab('support')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      Support
-      <span class="sb-badge gold">7</span>
+    <button class="sb-item" onclick="showTab('abonnements',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      Abonnements
     </button>
     <div class="sb-section">Recouvrement</div>
-    <button class="sb-item" onclick="switchTab('ialogs')">
+    <button class="sb-item" onclick="showTab('factures',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Toutes les factures
+    </button>
+    <button class="sb-item" onclick="showTab('ialogs',this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       Logs IA
     </button>
-    <button class="sb-item" onclick="switchTab('huissiers')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-      Huissiers
-    </button>
     <div class="sb-section">Système</div>
-    <button class="sb-item" onclick="switchTab('settings')">
+    <button class="sb-item" onclick="showTab('settings',this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      Paramètres système
+      Paramètres
     </button>
   </div>
-  <div class="sb-spacer"></div>
   <div class="sb-bottom">
     <div class="sb-user">
-      <div class="sb-avatar">AD</div>
-      <div>
-        <div class="sb-uname">Admin Bouclier</div>
-        <div class="sb-urole">Super Administrateur</div>
-      </div>
+      <div class="sb-avatar">A</div>
+      <div><div class="sb-uname">Alex</div><div class="sb-urole">Super Admin</div></div>
     </div>
+    <button class="btn-back" onclick="window.location.href='dashboard.html'">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      Retour au dashboard
+    </button>
   </div>
 </aside>
 
 <!-- MAIN -->
 <div class="main">
   <div class="topbar">
-    <div style="display:flex;align-items:center;gap:1rem;">
-      <span class="page-title" id="page-title">Dashboard global</span>
+    <span class="page-title" id="page-title">Dashboard global</span>
+    <div style="display:flex;align-items:center;gap:.75rem;">
       <div class="status-pill"><div class="status-dot"></div>Système opérationnel</div>
-    </div>
-    <div class="topbar-right">
-      <div class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
-      <div style="font-size:.7rem;color:var(--muted);font-family:'Inter',sans-serif;">Lundi 8 juin 2026 · 03:20</div>
+      <span style="font-size:.7rem;color:var(--muted);" id="admin-clock"></span>
     </div>
   </div>
 
   <div class="content">
 
-    <!-- ── OVERVIEW ── -->
-    <div class="tab-content active" id="tab-overview">
-      <div class="kpi-grid kpi-grid-4" style="margin-bottom:1rem;">
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Freelances actifs</span><div class="kpi-icon ki-purple">👥</div></div><div class="kpi-val purple">1 247</div><div class="kpi-delta delta-up">↑ +84 ce mois</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">MRR</span><div class="kpi-icon ki-green">💰</div></div><div class="kpi-val green">42 380€</div><div class="kpi-delta delta-up">↑ +12% vs M-1</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Factures traitées</span><div class="kpi-icon ki-blue">📄</div></div><div class="kpi-val blue">18 492</div><div class="kpi-delta delta-up">↑ +2 341 ce mois</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Taux churn</span><div class="kpi-icon ki-gold">📉</div></div><div class="kpi-val gold">1,8%</div><div class="kpi-delta delta-up">↓ Meilleur mois</div></div>
+    <!-- ── DASHBOARD ── -->
+    <div class="tab-content active" id="tab-dashboard">
+      <div class="kpi-grid g4">
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Utilisateurs inscrits</span><div class="kpi-icon ki-p">👥</div></div><div class="kpi-val purple" id="kpi-users">0</div><div class="kpi-delta" id="kpi-users-d">Aucun utilisateur</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Abonnés payants</span><div class="kpi-icon ki-g">💰</div></div><div class="kpi-val green" id="kpi-paying">0</div><div class="kpi-delta" id="kpi-paying-d">Aucun abonnement actif</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Comptes offerts</span><div class="kpi-icon ki-b">🎁</div></div><div class="kpi-val" id="kpi-gifts" style="color:#f9a8d4">0</div><div class="kpi-delta">Accès gratuits accordés</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Factures totales</span><div class="kpi-icon ki-gold">📄</div></div><div class="kpi-val gold" id="kpi-factures">0</div><div class="kpi-delta">Sur tous les comptes</div></div>
       </div>
-      <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:1.25rem;">
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Dossiers huissier</span><div class="kpi-icon ki-red">⚖️</div></div><div class="kpi-val red">23</div><div class="kpi-delta delta-neu">4 ouverts cette semaine</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Relances IA / jour</span><div class="kpi-icon ki-purple">🤖</div></div><div class="kpi-val">834</div><div class="kpi-delta delta-up">↑ +14%</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Taux recouvrement</span><div class="kpi-icon ki-green">✅</div></div><div class="kpi-val green">96,1%</div><div class="kpi-delta delta-neu">Stable sur 30j</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Tickets support</span><div class="kpi-icon ki-orange">🎫</div></div><div class="kpi-val orange">7</div><div class="kpi-delta delta-up">↓ -4 vs hier</div></div>
+      <div class="kpi-grid g4">
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">MRR estimé</span><div class="kpi-icon ki-g">📈</div></div><div class="kpi-val green" id="kpi-mrr">0€</div><div class="kpi-delta">Revenus mensuels récurrents</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">CA géré total</span><div class="kpi-icon ki-gold">💶</div></div><div class="kpi-val gold" id="kpi-ca">0€</div><div class="kpi-delta">Toutes factures confondues</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Relances IA</span><div class="kpi-icon ki-p">🤖</div></div><div class="kpi-val" id="kpi-relances">0</div><div class="kpi-delta">Total envoyées</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Dossiers huissier</span><div class="kpi-icon ki-r">⚖️</div></div><div class="kpi-val red" id="kpi-legal">0</div><div class="kpi-delta">Procédures actives</div></div>
       </div>
-
       <div class="grid-32">
-        <!-- MRR chart -->
         <div class="card">
-          <div class="card-head"><div><div class="card-title">MRR — Monthly Recurring Revenue</div><div class="card-sub">Évolution sur 8 mois</div></div></div>
-          <div class="chart-wrap">
-            <svg class="chart-svg" viewBox="0 0 500 110" preserveAspectRatio="none" style="height:120px;">
-              <defs>
-                <linearGradient id="admgr" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#a78bfa" stop-opacity="0.25"/>
-                  <stop offset="100%" stop-color="#a78bfa" stop-opacity="0"/>
-                </linearGradient>
-              </defs>
-              <path d="M0,90 L62,82 L125,72 L187,68 L250,55 L312,42 L375,30 L437,22 L500,12 L500,110 L0,110Z" fill="url(#admgr)"/>
-              <path d="M0,90 L62,82 L125,72 L187,68 L250,55 L312,42 L375,30 L437,22 L500,12" fill="none" stroke="#a78bfa" stroke-width="2"/>
-              <circle cx="62" cy="82" r="3" fill="#a78bfa"/>
-              <circle cx="125" cy="72" r="3" fill="#a78bfa"/>
-              <circle cx="187" cy="68" r="3" fill="#a78bfa"/>
-              <circle cx="250" cy="55" r="3" fill="#a78bfa"/>
-              <circle cx="312" cy="42" r="3" fill="#a78bfa"/>
-              <circle cx="375" cy="30" r="3" fill="#a78bfa"/>
-              <circle cx="437" cy="22" r="3" fill="#a78bfa"/>
-              <circle cx="500" cy="12" r="4" fill="#a78bfa"/>
-            </svg>
-            <div class="chart-labels">
-              <span class="chart-label">Nov</span><span class="chart-label">Déc</span><span class="chart-label">Jan</span><span class="chart-label">Fév</span><span class="chart-label">Mar</span><span class="chart-label">Avr</span><span class="chart-label">Mai</span><span class="chart-label">Jun</span>
-            </div>
-          </div>
+          <div class="card-head"><div class="card-title">Dernières inscriptions</div><div class="card-sub" id="last-signups-sub">—</div></div>
+          <div id="last-signups-list"><div class="empty-state"><div class="empty-icon">👥</div><div class="empty-title">Aucun utilisateur inscrit</div><div class="empty-sub">Les nouveaux inscrits apparaîtront ici.</div></div></div>
         </div>
-        <!-- Recent signups -->
         <div class="card">
-          <div class="card-head"><div class="card-title">Inscriptions récentes</div><button class="card-action" onclick="switchTab('freelances')">Voir tout →</button></div>
-          <div class="data-table">
-            <div class="dt-head" style="grid-template-columns:1fr .7fr .6fr;"><div class="dt-th">Freelance</div><div class="dt-th">Plan</div><div class="dt-th">Il y a</div></div>
-            <div class="dt-row" style="grid-template-columns:1fr .7fr .6fr;"><div><div class="dt-name">Marc Dubois</div><div class="dt-meta">Dev fullstack · Lyon</div></div><div><span class="badge b-purple">Pro</span></div><div class="dt-meta">2 min</div></div>
-            <div class="dt-row" style="grid-template-columns:1fr .7fr .6fr;"><div><div class="dt-name">Laura Petit</div><div class="dt-meta">Designer UI · Paris</div></div><div><span class="badge b-green">Solo</span></div><div class="dt-meta">18 min</div></div>
-            <div class="dt-row" style="grid-template-columns:1fr .7fr .6fr;"><div><div class="dt-name">Agence Pixel</div><div class="dt-meta">Studio · Nantes</div></div><div><span class="badge b-gold">Studio</span></div><div class="dt-meta">1h</div></div>
-            <div class="dt-row" style="grid-template-columns:1fr .7fr .6fr;"><div><div class="dt-name">Romain Chen</div><div class="dt-meta">SEO Consultant · Bordeaux</div></div><div><span class="badge b-purple">Pro</span></div><div class="dt-meta">3h</div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid-2">
-        <!-- AI logs -->
-        <div class="card">
-          <div class="card-head"><div><div class="card-title">Logs IA — Dernières 2h</div><div class="card-sub">834 requêtes traitées</div></div><button class="card-action" onclick="switchTab('ialogs')">Voir tout →</button></div>
-          <div class="log-list">
-            <div class="log-item"><div class="log-icon" style="background:var(--emerald-dim)">✅</div><div class="log-body"><div class="log-text">Relance J+5 envoyée à <strong>Startup Bloom SAS</strong> pour le compte de Sophie Martin — ton PME trésorerie tendue</div><div class="log-time">03:18:42</div></div><div class="log-level ll-success">SUCCESS</div></div>
-            <div class="log-item"><div class="log-icon" style="background:var(--red-dim)">⚖️</div><div class="log-body"><div class="log-text">Dossier <strong>Media Group SAS</strong> transmis à Maître Dubois — injonction de payer 3 000€</div><div class="log-time">03:10:15</div></div><div class="log-level ll-legal">LEGAL</div></div>
-            <div class="log-item"><div class="log-icon" style="background:var(--blue-dim)">🔍</div><div class="log-body"><div class="log-text">Scoring mis à jour : <strong>Renault Digital SAS</strong> — maintien A+ (bilan 2025 intégré)</div><div class="log-time">02:58:03</div></div><div class="log-level ll-info">INFO</div></div>
-            <div class="log-item"><div class="log-icon" style="background:var(--gold-dim)">⚠️</div><div class="log-body"><div class="log-text">Score dégradé détecté : <strong>PrintCo SAS</strong> B → C+, procédure collective signalée BODACC</div><div class="log-time">02:41:29</div></div><div class="log-level ll-warn">WARN</div></div>
-            <div class="log-item"><div class="log-icon" style="background:var(--emerald-dim)">✅</div><div class="log-body"><div class="log-text">Paiement confirmé après relance : <strong>TechStart SAS</strong> — 2 400€ pour Thomas L.</div><div class="log-time">02:30:11</div></div><div class="log-level ll-success">SUCCESS</div></div>
-          </div>
-        </div>
-        <!-- Huissiers -->
-        <div class="card">
-          <div class="card-head"><div><div class="card-title">Dossiers huissiers actifs</div><div class="card-sub">23 procédures en cours</div></div><button class="card-action" onclick="switchTab('huissiers')">Voir tout →</button></div>
-          <div class="data-table">
-            <div class="dt-head" style="grid-template-columns:1.8fr 1fr 1fr .8fr;"><div class="dt-th">Débiteur</div><div class="dt-th">Montant</div><div class="dt-th">Stade</div><div class="dt-th">J+</div></div>
-            <div class="dt-row" style="grid-template-columns:1.8fr 1fr 1fr .8fr;"><div><div class="dt-name">Media Group SAS</div><div class="dt-meta">Maître Dubois</div></div><div class="dt-val" style="color:var(--text)">3 000€</div><div><span class="badge b-red">Signifiée</span></div><div class="dt-meta">J+32</div></div>
-            <div class="dt-row" style="grid-template-columns:1.8fr 1fr 1fr .8fr;"><div><div class="dt-name">Agence Flex Paris</div><div class="dt-meta">Maître Renard</div></div><div class="dt-val" style="color:var(--text)">7 200€</div><div><span class="badge b-gold">En cours</span></div><div class="dt-meta">J+18</div></div>
-            <div class="dt-row" style="grid-template-columns:1.8fr 1fr 1fr .8fr;"><div><div class="dt-name">Digital Wave SARL</div><div class="dt-meta">Maître Leroy</div></div><div class="dt-val" style="color:var(--text)">1 500€</div><div><span class="badge b-green">Réglée</span></div><div class="dt-meta">J+45</div></div>
-            <div class="dt-row" style="grid-template-columns:1.8fr 1fr 1fr .8fr;"><div><div class="dt-name">PrintCo SAS</div><div class="dt-meta">Maître Dubois</div></div><div class="dt-val" style="color:var(--text)">4 800€</div><div><span class="badge b-orange">Proc. coll.</span></div><div class="dt-meta">J+60</div></div>
+          <div class="card-head"><div class="card-title">Activité récente</div></div>
+          <div class="log-list" id="activity-log">
+            <div class="log-item"><div class="log-icon" style="background:var(--purple-dim)">⚡</div><div class="log-body"><div class="log-text">Admin Bouclier connecté</div><div class="log-time">Maintenant</div></div><div class="log-level ll-info">ADMIN</div></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ── SAAS METRICS ── -->
+    <!-- ── MÉTRIQUES SAAS ── -->
     <div class="tab-content" id="tab-saas">
-      <div class="kpi-grid kpi-grid-5">
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">ARR</span><div class="kpi-icon ki-green">📈</div></div><div class="kpi-val green">508 560€</div><div class="kpi-delta delta-up">↑ +148%</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">MRR</span><div class="kpi-icon ki-purple">💶</div></div><div class="kpi-val purple">42 380€</div><div class="kpi-delta delta-up">↑ +12% M/M</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">ARPU</span><div class="kpi-icon ki-blue">👤</div></div><div class="kpi-val blue">34€</div><div class="kpi-delta delta-up">↑ +4€</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Churn rate</span><div class="kpi-icon ki-gold">📉</div></div><div class="kpi-val gold">1,8%</div><div class="kpi-delta delta-up">↓ -0.4%</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">LTV moyen</span><div class="kpi-icon ki-green">🏆</div></div><div class="kpi-val green">1 889€</div><div class="kpi-delta delta-neu">CAC : 48€</div></div>
-      </div>
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-head"><div><div class="card-title">Répartition des plans</div></div></div>
-          <div class="card-body">
-            <div style="display:flex;flex-direction:column;gap:1rem;">
-              <div><div style="display:flex;justify-content:space-between;margin-bottom:.4rem;"><span style="font-size:.73rem;color:var(--subtle)">Solo (29€/mois)</span><span style="font-size:.73rem;font-family:'Inter',sans-serif;font-weight:600;color:var(--text);">512 abonnés</span></div><div class="progress-bar" style="height:8px;background:var(--raised)"><div class="progress-fill" style="width:41%;background:var(--emerald)"></div></div></div>
-              <div><div style="display:flex;justify-content:space-between;margin-bottom:.4rem;"><span style="font-size:.73rem;color:var(--subtle)">Bouclier Pro (59€/mois)</span><span style="font-size:.73rem;font-family:'Inter',sans-serif;font-weight:600;color:var(--text);">648 abonnés</span></div><div class="progress-bar" style="height:8px;background:var(--raised)"><div class="progress-fill" style="width:52%;background:var(--purple)"></div></div></div>
-              <div><div style="display:flex;justify-content:space-between;margin-bottom:.4rem;"><span style="font-size:.73rem;color:var(--subtle)">Studio (sur devis)</span><span style="font-size:.73rem;font-family:'Inter',sans-serif;font-weight:600;color:var(--text);">87 comptes</span></div><div class="progress-bar" style="height:8px;background:var(--raised)"><div class="progress-fill" style="width:7%;background:var(--gold)"></div></div></div>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-head"><div class="card-title">Nouvelles inscriptions / mois</div></div>
-          <div class="chart-wrap">
-            <svg class="chart-svg" viewBox="0 0 500 100" preserveAspectRatio="none">
-              <defs><linearGradient id="gr4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#a78bfa" stop-opacity="0.2"/><stop offset="100%" stop-color="#a78bfa" stop-opacity="0"/></linearGradient></defs>
-              <path d="M0,80 L83,72 L166,65 L250,55 L333,40 L416,28 L500,15 L500,100 L0,100Z" fill="url(#gr4)"/>
-              <path d="M0,80 L83,72 L166,65 L250,55 L333,40 L416,28 L500,15" fill="none" stroke="#a78bfa" stroke-width="2"/>
-            </svg>
-            <div class="chart-labels"><span class="chart-label">Jan</span><span class="chart-label">Fév</span><span class="chart-label">Mar</span><span class="chart-label">Avr</span><span class="chart-label">Mai</span><span class="chart-label">Jun</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── FREELANCES ── -->
-    <div class="tab-content" id="tab-freelances">
-      <div style="display:flex;gap:.5rem;margin-bottom:1.25rem;">
-        <input class="form-input" style="width:240px" placeholder="🔍  Rechercher un freelance…">
-        <select class="form-input" style="width:140px;appearance:none;cursor:pointer;">
-          <option>Tous les plans</option><option>Solo</option><option>Bouclier Pro</option><option>Studio</option>
-        </select>
-        <select class="form-input" style="width:140px;appearance:none;cursor:pointer;">
-          <option>Tous statuts</option><option>Actif</option><option>Churné</option><option>Suspendu</option>
-        </select>
+      <div class="kpi-grid g5">
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">ARR</span><div class="kpi-icon ki-g">📈</div></div><div class="kpi-val green" id="saas-arr">0€</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">MRR</span><div class="kpi-icon ki-p">💶</div></div><div class="kpi-val purple" id="saas-mrr">0€</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">ARPU</span><div class="kpi-icon ki-b">👤</div></div><div class="kpi-val" id="saas-arpu">—</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Payants</span><div class="kpi-icon ki-g">✅</div></div><div class="kpi-val green" id="saas-paying">0</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Offerts</span><div class="kpi-icon ki-b">🎁</div></div><div class="kpi-val" style="color:#f9a8d4" id="saas-gifts">0</div></div>
       </div>
       <div class="card">
-        <div class="data-table">
-          <div class="dt-head" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;"><div class="dt-th">Freelance</div><div class="dt-th">Plan</div><div class="dt-th">Factures</div><div class="dt-th">CA géré</div><div class="dt-th">Inscription</div><div class="dt-th">Statut</div></div>
-          <div class="dt-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;"><div><div class="dt-name">Sophie Martin</div><div class="dt-meta">UI/UX · Paris · sophie@martin.fr</div></div><div><span class="badge b-purple">Pro</span></div><div class="dt-val" style="color:var(--text)">41</div><div class="dt-val" style="color:var(--emerald)">142K€</div><div class="dt-meta">Jan 2026</div><div><span class="badge b-green">Actif</span></div></div>
-          <div class="dt-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;"><div><div class="dt-name">Thomas Leroy</div><div class="dt-meta">Dev · Lyon · thomas@leroy.dev</div></div><div><span class="badge b-purple">Pro</span></div><div class="dt-val" style="color:var(--text)">28</div><div class="dt-val" style="color:var(--emerald)">98K€</div><div class="dt-meta">Fév 2026</div><div><span class="badge b-green">Actif</span></div></div>
-          <div class="dt-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;"><div><div class="dt-name">Amira Benali</div><div class="dt-meta">Copywriter · Bordeaux</div></div><div><span class="badge b-green">Solo</span></div><div class="dt-val" style="color:var(--text)">17</div><div class="dt-val" style="color:var(--emerald)">52K€</div><div class="dt-meta">Mar 2026</div><div><span class="badge b-green">Actif</span></div></div>
-          <div class="dt-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;"><div><div class="dt-name">Agence Pixel</div><div class="dt-meta">Studio · Nantes</div></div><div><span class="badge b-gold">Studio</span></div><div class="dt-val" style="color:var(--text)">156</div><div class="dt-val" style="color:var(--emerald)">840K€</div><div class="dt-meta">Nov 2025</div><div><span class="badge b-green">Actif</span></div></div>
-          <div class="dt-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;"><div><div class="dt-name">Jean Moreau</div><div class="dt-meta">Consultant · Marseille</div></div><div><span class="badge b-green">Solo</span></div><div class="dt-val" style="color:var(--text)">6</div><div class="dt-val" style="color:var(--muted)">18K€</div><div class="dt-meta">Mai 2026</div><div><span class="badge b-red">Churné</span></div></div>
-          <div class="dt-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;"><div><div class="dt-name">Marc Dubois</div><div class="dt-meta">Dev fullstack · Lyon</div></div><div><span class="badge b-purple">Pro</span></div><div class="dt-val" style="color:var(--text)">0</div><div class="dt-val" style="color:var(--muted)">—</div><div class="dt-meta">Il y a 2 min</div><div><span class="badge b-blue">Essai</span></div></div>
+        <div class="card-head"><div class="card-title">Répartition des plans</div></div>
+        <div class="card-body" id="saas-plans">
+          <div class="empty-state"><div class="empty-icon">📊</div><div class="empty-title">Pas encore de données</div><div class="empty-sub">Les statistiques apparaîtront dès les premières inscriptions.</div></div>
         </div>
       </div>
     </div>
 
-    <!-- ── SUPPORT ── -->
-    <div class="tab-content" id="tab-support">
-      <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);">
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Tickets ouverts</span><div class="kpi-icon ki-orange">🎫</div></div><div class="kpi-val orange">7</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Délai réponse moy.</span><div class="kpi-icon ki-blue">⏱</div></div><div class="kpi-val blue">1h 24min</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Résolus ce mois</span><div class="kpi-icon ki-green">✅</div></div><div class="kpi-val green">142</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">CSAT</span><div class="kpi-icon ki-gold">⭐</div></div><div class="kpi-val gold">4,8/5</div></div>
+    <!-- ── COMPTES CLIENTS ── -->
+    <div class="tab-content" id="tab-users">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;">
+        <input class="form-input" style="width:260px;" placeholder="🔍  Rechercher un utilisateur…" id="search-users" oninput="renderUsers()">
+        <button class="btn-purple" onclick="openModal('modal-add-user')">+ Ajouter un utilisateur</button>
       </div>
       <div class="card">
-        <div class="card-head"><div class="card-title">Tickets en attente</div></div>
-        <div class="data-table">
-          <div class="dt-head" style="grid-template-columns:2fr 1.2fr 1fr .8fr .8fr;"><div class="dt-th">Sujet</div><div class="dt-th">Utilisateur</div><div class="dt-th">Catégorie</div><div class="dt-th">Priorité</div><div class="dt-th">Depuis</div></div>
-          <div class="dt-row" style="grid-template-columns:2fr 1.2fr 1fr .8fr .8fr;"><div><div class="dt-name">Huissier non joignable sur dossier #1284</div><div class="dt-meta">Réf. #4821</div></div><div class="dt-meta">Sophie Martin</div><div><span class="badge b-red">Recouvrement</span></div><div><span class="badge b-red">Urgent</span></div><div class="dt-meta">2h</div></div>
-          <div class="dt-row" style="grid-template-columns:2fr 1.2fr 1fr .8fr .8fr;"><div><div class="dt-name">Facture exportée avec mauvais SIRET</div><div class="dt-meta">Réf. #4820</div></div><div class="dt-meta">Marc Dubois</div><div><span class="badge b-gold">Facturation</span></div><div><span class="badge b-gold">Moyen</span></div><div class="dt-meta">4h</div></div>
-          <div class="dt-row" style="grid-template-columns:2fr 1.2fr 1fr .8fr .8fr;"><div><div class="dt-name">Score client incorrect pour Renault</div><div class="dt-meta">Réf. #4818</div></div><div class="dt-meta">Amira Benali</div><div><span class="badge b-blue">Scoring</span></div><div><span class="badge b-green">Faible</span></div><div class="dt-meta">1j</div></div>
-          <div class="dt-row" style="grid-template-columns:2fr 1.2fr 1fr .8fr .8fr;"><div><div class="dt-name">Demande de remboursement — résiliation</div><div class="dt-meta">Réf. #4816</div></div><div class="dt-meta">Jean Moreau</div><div><span class="badge b-purple">Abonnement</span></div><div><span class="badge b-gold">Moyen</span></div><div class="dt-meta">2j</div></div>
+        <div class="dt-head" style="grid-template-columns:2fr 1.2fr 1fr 1fr 1fr .8fr;">
+          <div class="dt-th">Utilisateur</div><div class="dt-th">Email</div><div class="dt-th">Plan</div><div class="dt-th">Factures</div><div class="dt-th">Inscription</div><div class="dt-th">Actions</div>
         </div>
+        <div id="users-list"><div class="empty-state"><div class="empty-icon">👥</div><div class="empty-title">Aucun utilisateur</div><div class="empty-sub">Les utilisateurs inscrits apparaîtront ici.</div></div></div>
       </div>
     </div>
 
-    <!-- ── IA LOGS ── -->
+    <!-- ── ABONNEMENTS ── -->
+    <div class="tab-content" id="tab-abonnements">
+      <div class="kpi-grid g3">
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Solo (29€/mois)</span><div class="kpi-icon ki-g">📦</div></div><div class="kpi-val" id="plan-solo">0</div><div class="kpi-delta" id="plan-solo-rev">0€/mois</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Bouclier Pro (59€/mois)</span><div class="kpi-icon ki-p">🛡</div></div><div class="kpi-val purple" id="plan-pro">0</div><div class="kpi-delta" id="plan-pro-rev">0€/mois</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Comptes offerts</span><div class="kpi-icon ki-b">🎁</div></div><div class="kpi-val" style="color:#f9a8d4" id="plan-gift">0</div><div class="kpi-delta">Ne comptent pas dans le MRR</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-title">Gestion des abonnements</div><div class="card-sub">Modifiez le plan de n'importe quel utilisateur</div></div>
+        <div class="dt-head" style="grid-template-columns:2fr 1.5fr 1fr 1fr 1fr;">
+          <div class="dt-th">Utilisateur</div><div class="dt-th">Email</div><div class="dt-th">Plan actuel</div><div class="dt-th">Type</div><div class="dt-th">Modifier</div>
+        </div>
+        <div id="abonnements-list"><div class="empty-state"><div class="empty-icon">💳</div><div class="empty-title">Aucun abonnement</div><div class="empty-sub">Les abonnements apparaîtront ici dès les premières inscriptions.</div></div></div>
+      </div>
+    </div>
+
+    <!-- ── TOUTES LES FACTURES ── -->
+    <div class="tab-content" id="tab-factures">
+      <div class="kpi-grid g3">
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Total factures</span><div class="kpi-icon ki-gold">📄</div></div><div class="kpi-val gold" id="all-f-total">0</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Montant total géré</span><div class="kpi-icon ki-g">💶</div></div><div class="kpi-val green" id="all-f-ca">0€</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">En recouvrement</span><div class="kpi-icon ki-r">⚖️</div></div><div class="kpi-val red" id="all-f-legal">0</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-title">Toutes les factures — tous comptes</div></div>
+        <div class="dt-head" style="grid-template-columns:1.5fr 2fr 1fr 1fr 1fr;">
+          <div class="dt-th">Propriétaire</div><div class="dt-th">Client facturé</div><div class="dt-th">Montant</div><div class="dt-th">Échéance</div><div class="dt-th">Statut</div>
+        </div>
+        <div id="all-factures-list"><div class="empty-state"><div class="empty-icon">📄</div><div class="empty-title">Aucune facture</div><div class="empty-sub">Les factures créées par les utilisateurs apparaîtront ici.</div></div></div>
+      </div>
+    </div>
+
+    <!-- ── LOGS IA ── -->
     <div class="tab-content" id="tab-ialogs">
-      <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr)">
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Req. traitées (24h)</span><div class="kpi-icon ki-purple">🤖</div></div><div class="kpi-val purple">20 016</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Taux succès</span><div class="kpi-icon ki-green">✅</div></div><div class="kpi-val green">99,2%</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Escalades légales</span><div class="kpi-icon ki-red">⚖️</div></div><div class="kpi-val red">4</div><div class="kpi-delta delta-neu">aujourd'hui</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Latence moyenne</span><div class="kpi-icon ki-blue">⚡</div></div><div class="kpi-val blue">340ms</div></div>
+      <div class="kpi-grid g4">
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Requêtes (24h)</span><div class="kpi-icon ki-p">🤖</div></div><div class="kpi-val purple" id="log-total">0</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Relances envoyées</span><div class="kpi-icon ki-g">📧</div></div><div class="kpi-val green" id="log-relances">0</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Escalades légales</span><div class="kpi-icon ki-r">⚖️</div></div><div class="kpi-val red" id="log-legal">0</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Taux succès</span><div class="kpi-icon ki-g">✅</div></div><div class="kpi-val green" id="log-taux">—</div></div>
       </div>
       <div class="card">
-        <div class="card-head"><div><div class="card-title">Journal IA en temps réel</div><div class="card-sub">Toutes actions automatisées</div></div></div>
-        <div class="log-list" style="max-height:500px;">
-          <div class="log-item"><div class="log-icon" style="background:var(--emerald-dim)">✅</div><div class="log-body"><div class="log-text">Relance J+8 envoyée · <strong>Startup Bloom SAS</strong> · Compte Sophie Martin · Ton PME trésorerie tendue · Score B+</div><div class="log-time">2026-06-08 03:18:42 · model:claude-sonnet · 288ms</div></div><div class="log-level ll-success">SUCCESS</div></div>
-          <div class="log-item"><div class="log-icon" style="background:var(--red-dim)">⚖️</div><div class="log-body"><div class="log-text">Dossier transmis à Maître Dubois · <strong>Media Group SAS</strong> · 3 000€ · Compte Sophie Martin · Mise en demeure générée</div><div class="log-time">2026-06-08 03:10:15 · legal-api · 1 240ms</div></div><div class="log-level ll-legal">LEGAL</div></div>
-          <div class="log-item"><div class="log-icon" style="background:var(--blue-dim)">🔍</div><div class="log-body"><div class="log-text">Scoring actualisé · <strong>Renault Digital SAS</strong> · Source: INSEE bilan 2025 + Infogreffe · Score: A+ (maintenu)</div><div class="log-time">2026-06-08 02:58:03 · scoring-engine · 820ms</div></div><div class="log-level ll-info">INFO</div></div>
-          <div class="log-item"><div class="log-icon" style="background:var(--gold-dim)">⚠️</div><div class="log-body"><div class="log-text">Dégradation score · <strong>PrintCo SAS</strong> · B → C+ · Procédure collective signalée BODACC J-2 · Alerte envoyée aux freelances exposés (x3)</div><div class="log-time">2026-06-08 02:41:29 · alert-engine · 410ms</div></div><div class="log-level ll-warn">WARN</div></div>
-          <div class="log-item"><div class="log-icon" style="background:var(--emerald-dim)">💶</div><div class="log-body"><div class="log-text">Paiement confirmé · <strong>TechStart SAS</strong> · 2 400€ · Compte Thomas Leroy · Délai recouvrement: 8j · Relance J+5 efficace</div><div class="log-time">2026-06-08 02:30:11 · payment-webhook · 95ms</div></div><div class="log-level ll-success">SUCCESS</div></div>
-          <div class="log-item"><div class="log-icon" style="background:var(--blue-dim)">📊</div><div class="log-body"><div class="log-text">Batch scoring quotidien · 1 247 entreprises analysées · 3 dégradations · 0 faillites · Durée: 4min 12s</div><div class="log-time">2026-06-08 02:00:00 · cron-job · batch</div></div><div class="log-level ll-info">INFO</div></div>
-          <div class="log-item"><div class="log-icon" style="background:var(--emerald-dim)">✅</div><div class="log-body"><div class="log-text">Relance J+3 envoyée · <strong>Agence Flex Paris</strong> · Compte Romain Chen · Ton grand groupe · 7 200€</div><div class="log-time">2026-06-07 23:45:20 · email-engine · 312ms</div></div><div class="log-level ll-success">SUCCESS</div></div>
+        <div class="card-head"><div class="card-title">Journal IA en temps réel</div><div class="card-sub">Toutes les actions automatisées</div></div>
+        <div class="log-list" id="ia-log-list">
+          <div class="empty-state"><div class="empty-icon">🤖</div><div class="empty-title">Aucune activité IA</div><div class="empty-sub">Les logs apparaîtront dès que l'IA interviendra sur une facture.</div></div>
         </div>
       </div>
     </div>
 
-    <!-- ── HUISSIERS ── -->
-    <div class="tab-content" id="tab-huissiers">
-      <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr)">
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Dossiers actifs</span><div class="kpi-icon ki-red">⚖️</div></div><div class="kpi-val red">23</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Montant total</span><div class="kpi-icon ki-gold">💶</div></div><div class="kpi-val gold">87 400€</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Réglés ce mois</span><div class="kpi-icon ki-green">✅</div></div><div class="kpi-val green">11</div><div class="kpi-delta delta-up">↑ Taux 72%</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Partenaires actifs</span><div class="kpi-icon ki-blue">🏛</div></div><div class="kpi-val blue">8</div></div>
-      </div>
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-head"><div class="card-title">Dossiers en cours</div></div>
-          <div class="data-table">
-            <div class="dt-head" style="grid-template-columns:1.8fr 1fr 1fr 1fr .8fr;"><div class="dt-th">Débiteur</div><div class="dt-th">Montant</div><div class="dt-th">Huissier</div><div class="dt-th">Stade</div><div class="dt-th">J+</div></div>
-            <div class="dt-row" style="grid-template-columns:1.8fr 1fr 1fr 1fr .8fr;"><div><div class="dt-name">Media Group SAS</div><div class="dt-meta">Sophie Martin</div></div><div class="dt-val" style="color:var(--text)">3 000€</div><div class="dt-meta">Me Dubois</div><div><span class="badge b-red">Signifiée</span></div><div class="dt-meta">J+32</div></div>
-            <div class="dt-row" style="grid-template-columns:1.8fr 1fr 1fr 1fr .8fr;"><div><div class="dt-name">Agence Flex Paris</div><div class="dt-meta">Romain Chen</div></div><div class="dt-val" style="color:var(--text)">7 200€</div><div class="dt-meta">Me Renard</div><div><span class="badge b-gold">Envoyée</span></div><div class="dt-meta">J+18</div></div>
-            <div class="dt-row" style="grid-template-columns:1.8fr 1fr 1fr 1fr .8fr;"><div><div class="dt-name">PrintCo SAS</div><div class="dt-meta">Laura Petit</div></div><div class="dt-val" style="color:var(--text)">4 800€</div><div class="dt-meta">Me Dubois</div><div><span class="badge b-orange">Proc. coll.</span></div><div class="dt-meta">J+60</div></div>
-            <div class="dt-row" style="grid-template-columns:1.8fr 1fr 1fr 1fr .8fr;"><div><div class="dt-name">Digital Wave SARL</div><div class="dt-meta">Thomas Leroy</div></div><div class="dt-val" style="color:var(--emerald)">1 500€</div><div class="dt-meta">Me Leroy</div><div><span class="badge b-green">Réglée ✓</span></div><div class="dt-meta">J+45</div></div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-head"><div class="card-title">Réseau partenaires</div></div>
-          <div style="padding:1.1rem;display:flex;flex-direction:column;gap:.75rem;">
-            <div style="background:var(--raised);border:1px solid var(--border);border-radius:var(--r2);padding:.85rem;display:flex;align-items:center;justify-content:space-between;">
-              <div><div style="font-size:.75rem;font-weight:600;color:var(--text)">Maître Dubois</div><div style="font-size:.62rem;color:var(--muted);margin-top:2px;">Paris · 8 dossiers actifs</div></div>
-              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.25rem;"><span class="badge b-green">Partenaire prioritaire</span><span style="font-size:.62rem;font-family:'Inter',sans-serif;color:var(--emerald)">Taux succès 89%</span></div>
-            </div>
-            <div style="background:var(--raised);border:1px solid var(--border);border-radius:var(--r2);padding:.85rem;display:flex;align-items:center;justify-content:space-between;">
-              <div><div style="font-size:.75rem;font-weight:600;color:var(--text)">Maître Renard</div><div style="font-size:.62rem;color:var(--muted);margin-top:2px;">Lyon · 5 dossiers actifs</div></div>
-              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.25rem;"><span class="badge b-purple">Partenaire</span><span style="font-size:.62rem;font-family:'Inter',sans-serif;color:var(--emerald)">Taux succès 84%</span></div>
-            </div>
-            <div style="background:var(--raised);border:1px solid var(--border);border-radius:var(--r2);padding:.85rem;display:flex;align-items:center;justify-content:space-between;">
-              <div><div style="font-size:.75rem;font-weight:600;color:var(--text)">Maître Leroy</div><div style="font-size:.62rem;color:var(--muted);margin-top:2px;">Bordeaux · 3 dossiers actifs</div></div>
-              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.25rem;"><span class="badge b-purple">Partenaire</span><span style="font-size:.62rem;font-family:'Inter',sans-serif;color:var(--emerald)">Taux succès 91%</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── SETTINGS ── -->
+    <!-- ── PARAMÈTRES ── -->
     <div class="tab-content" id="tab-settings">
       <div class="grid-2">
         <div>
-          <div class="card" style="margin-bottom:1.25rem;">
+          <div class="card">
             <div class="card-head"><div class="card-title">Paramètres IA</div></div>
             <div class="card-body">
-              <div class="toggle-row"><div class="toggle-info"><h4>Relances automatiques globales</h4><p>Activer/désactiver le moteur de relances IA</p></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="toggle-row"><div class="toggle-info"><h4>Relances automatiques</h4><p>Activer/désactiver le moteur de relances IA global</p></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
               <div class="toggle-row"><div class="toggle-info"><h4>Escalade légale automatique</h4><p>Transmission auto à l'huissier après J+25</p></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
-              <div class="toggle-row"><div class="toggle-info"><h4>Scoring quotidien batch</h4><p>Mise à jour nocturne des scores clients (02h00)</p></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
-              <div class="toggle-row" style="border-bottom:none"><div class="toggle-info"><h4>Alertes BODACC temps réel</h4><p>Surveillance procédures collectives</p></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="toggle-row"><div class="toggle-info"><h4>Scoring quotidien</h4><p>Mise à jour nocturne des scores clients (02h00)</p></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="toggle-row" style="border-bottom:none"><div class="toggle-info"><h4>Alertes BODACC</h4><p>Surveillance procédures collectives en temps réel</p></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
             </div>
           </div>
-          <div class="card">
+          <div class="card" style="margin-top:1.25rem;">
             <div class="card-head"><div class="card-title">Seuils de recouvrement</div></div>
             <div class="card-body">
               <div class="form-group"><label class="form-label">Délai relance douce (jours)</label><input class="form-input" value="3" type="number"></div>
               <div class="form-group"><label class="form-label">Délai relance formelle (jours)</label><input class="form-input" value="10" type="number"></div>
               <div class="form-group"><label class="form-label">Délai escalade huissier (jours)</label><input class="form-input" value="25" type="number"></div>
-              <button class="btn-purple">Appliquer</button>
+              <button class="btn-purple" onclick="showToast('✅ Seuils sauvegardés.')">Appliquer</button>
             </div>
           </div>
         </div>
         <div>
-          <div class="card" style="margin-bottom:1.25rem;">
-            <div class="card-head"><div class="card-title">Statut système</div></div>
+          <div class="card">
+            <div class="card-head"><div class="card-title">Statut des services</div></div>
             <div class="card-body">
-              <div style="display:flex;flex-direction:column;gap:.75rem;">
-                <div style="display:flex;align-items:center;justify-content:space-between;padding:.65rem .75rem;background:var(--raised);border-radius:var(--r2);">
-                  <span style="font-size:.73rem;color:var(--subtle)">API Bouclier</span>
-                  <span class="badge b-green">● Opérationnel</span>
-                </div>
-                <div style="display:flex;align-items:center;justify-content:space-between;padding:.65rem .75rem;background:var(--raised);border-radius:var(--r2);">
-                  <span style="font-size:.73rem;color:var(--subtle)">IA Relances Engine</span>
-                  <span class="badge b-green">● Opérationnel</span>
-                </div>
-                <div style="display:flex;align-items:center;justify-content:space-between;padding:.65rem .75rem;background:var(--raised);border-radius:var(--r2);">
-                  <span style="font-size:.73rem;color:var(--subtle)">INSEE / Infogreffe Sync</span>
-                  <span class="badge b-green">● Opérationnel</span>
-                </div>
-                <div style="display:flex;align-items:center;justify-content:space-between;padding:.65rem .75rem;background:var(--raised);border-radius:var(--r2);">
-                  <span style="font-size:.73rem;color:var(--subtle)">Legal API (Huissiers)</span>
-                  <span class="badge b-green">● Opérationnel</span>
-                </div>
-                <div style="display:flex;align-items:center;justify-content:space-between;padding:.65rem .75rem;background:var(--raised);border-radius:var(--r2);">
-                  <span style="font-size:.73rem;color:var(--subtle)">Stripe Billing</span>
-                  <span class="badge b-green">● Opérationnel</span>
-                </div>
-                <div style="display:flex;align-items:center;justify-content:space-between;padding:.65rem .75rem;background:rgba(240,180,41,.06);border:1px solid rgba(240,180,41,.2);border-radius:var(--r2);">
-                  <span style="font-size:.73rem;color:var(--subtle)">BODACC Webhook</span>
-                  <span class="badge b-gold">⚠ Latence 420ms</span>
-                </div>
-              </div>
+              <div class="sys-row"><span class="sys-name">API Bouclier</span><span class="badge b-green">● Opérationnel</span></div>
+              <div class="sys-row"><span class="sys-name">IA Relances Engine</span><span class="badge b-green">● Opérationnel</span></div>
+              <div class="sys-row"><span class="sys-name">Supabase Auth</span><span class="badge b-green">● Opérationnel</span></div>
+              <div class="sys-row"><span class="sys-name">INSEE / Infogreffe Sync</span><span class="badge b-green">● Opérationnel</span></div>
+              <div class="sys-row"><span class="sys-name">Legal API (Huissiers)</span><span class="badge b-green">● Opérationnel</span></div>
+              <div class="sys-row"><span class="sys-name">Stripe Billing</span><span class="badge b-gold">⚠ Non configuré</span></div>
             </div>
           </div>
-          <div class="card">
+          <div class="card" style="margin-top:1.25rem;">
             <div class="card-head"><div class="card-title">Zone critique</div></div>
-            <div class="card-body" style="display:flex;flex-direction:column;gap:.75rem;">
-              <button class="btn-danger" style="text-align:left;width:100%">Purger les logs IA (> 90j)</button>
-              <button class="btn-danger" style="text-align:left;width:100%">Suspendre un compte freelance</button>
-              <button class="btn-danger" style="text-align:left;width:100%">Désactiver l'escalade légale globale</button>
+            <div class="card-body">
+              <button class="btn-danger" onclick="showToast('📦 Export en cours…')">Exporter toutes les données</button>
+              <button class="btn-danger" onclick="showToast('🔄 Cache vidé.')">Vider le cache système</button>
+              <button class="btn-danger" onclick="if(confirm('Désactiver les relances IA globalement ?')) showToast('⚠️ Relances désactivées.')">Désactiver relances IA globales</button>
             </div>
           </div>
         </div>
       </div>
     </div>
 
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /app -->
+
+<!-- MODAL MODIFIER ABONNEMENT -->
+<div class="modal-overlay" id="modal-edit-plan">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-edit-plan')">✕</button>
+    <h3>Modifier l'abonnement</h3>
+    <div id="modal-edit-user-info" style="background:var(--raised);border-radius:var(--r2);padding:.85rem;margin-bottom:1.25rem;font-size:.78rem;color:var(--subtle);"></div>
+    <div class="form-group">
+      <label class="form-label">Plan</label>
+      <select class="form-input" id="edit-plan">
+        <option value="solo">Solo — 29€/mois</option>
+        <option value="pro">Bouclier Pro — 59€/mois</option>
+        <option value="studio">Studio — Sur devis</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Type d'accès</label>
+      <select class="form-input" id="edit-type">
+        <option value="payant">Payant</option>
+        <option value="offert">Offert (gratuit — ne compte pas dans le MRR)</option>
+        <option value="essai">Essai gratuit</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Note interne (optionnel)</label>
+      <input class="form-input" id="edit-note" placeholder="Ex: Ma femme, compte famille…">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-edit-plan')">Annuler</button>
+      <button class="btn-purple" onclick="saveUserPlan()">Sauvegarder</button>
+    </div>
   </div>
 </div>
 
+<!-- MODAL AJOUTER UTILISATEUR -->
+<div class="modal-overlay" id="modal-add-user">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-add-user')">✕</button>
+    <h3>Ajouter un utilisateur</h3>
+    <div class="form-group"><label class="form-label">Nom complet</label><input class="form-input" id="add-name" placeholder="Sophie Martin"></div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="add-email" type="email" placeholder="sophie@email.fr"></div>
+    <div class="modal-row">
+      <div class="form-group"><label class="form-label">Plan</label>
+        <select class="form-input" id="add-plan">
+          <option value="solo">Solo</option>
+          <option value="pro">Bouclier Pro</option>
+          <option value="studio">Studio</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Type d'accès</label>
+        <select class="form-input" id="add-type">
+          <option value="essai">Essai gratuit</option>
+          <option value="payant">Payant</option>
+          <option value="offert">Offert (gratuit)</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Note interne</label><input class="form-input" id="add-note" placeholder="Ex: Ma femme, compte famille…"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-add-user')">Annuler</button>
+      <button class="btn-purple" onclick="addUser()">Créer le compte</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const titles = {
-  overview:'Dashboard global', saas:'Métriques SaaS',
-  freelances:'Gestion Freelances', support:'Support Client',
-  ialogs:'Logs IA', huissiers:'Gestion Huissiers', settings:'Paramètres Système'
-};
-function switchTab(name){
-  document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
-  document.querySelectorAll('.sb-item').forEach(el=>el.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active');
-  document.querySelectorAll('.sb-item').forEach(btn=>{
-    if(btn.getAttribute('onclick')&&btn.getAttribute('onclick').includes(name)) btn.classList.add('active');
+const SUPABASE_URL = 'https://nqaerwhxyeogtykyajyt.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_3_zaIZvW43rZ1exWyK1Pfg_LiAXd6fL';
+const ADMIN_EMAIL  = 'alex.skp31@gmail.com';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── AUTH GUARD ──
+(async () => {
+  const { data } = await sb.auth.getSession();
+  if (!data.session) { window.location.href = 'login.html'; return; }
+  if (data.session.user.email !== ADMIN_EMAIL) {
+    alert('Accès non autorisé.');
+    window.location.href = 'dashboard.html';
+    return;
+  }
+  loadAll();
+})();
+
+// ── STORAGE ADMIN (localStorage cross-users simulation) ──
+// En prod, ça serait une vraie DB. Ici on stocke les users admins localement.
+let adminUsers = JSON.parse(localStorage.getItem('bouclier_admin_users') || '[]');
+let editingUserId = null;
+
+function saveAdminUsers() { localStorage.setItem('bouclier_admin_users', JSON.stringify(adminUsers)); }
+
+// ── TABS ──
+function showTab(name, btn) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  if (btn) btn.classList.add('active');
+  const titles = {dashboard:'Dashboard global',saas:'Métriques SaaS',users:'Comptes clients',abonnements:'Gestion abonnements',factures:'Toutes les factures',ialogs:'Logs IA',settings:'Paramètres système'};
+  document.getElementById('page-title').textContent = titles[name] || name;
+  if (name === 'users') renderUsers();
+  if (name === 'abonnements') renderAbonnements();
+  if (name === 'factures') renderAllFactures();
+  if (name === 'saas') renderSaas();
+  if (name === 'ialogs') renderLogs();
+}
+
+// ── CLOCK ──
+function updateClock() {
+  const now = new Date();
+  document.getElementById('admin-clock').textContent = now.toLocaleString('fr-FR', {dateStyle:'short', timeStyle:'short'});
+}
+setInterval(updateClock, 1000); updateClock();
+
+// ── LOAD ALL ──
+function loadAll() {
+  // Récupère les factures de tous les users depuis localStorage
+  renderDashboard();
+  renderUsers();
+  renderAbonnements();
+  renderAllFactures();
+  renderSaas();
+  renderLogs();
+}
+
+function getAllFactures() {
+  // Cherche toutes les clés bouclier_factures_* ou bouclier_factures
+  const allF = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key === 'bouclier_factures') {
+      const f = JSON.parse(localStorage.getItem(key) || '[]');
+      f.forEach(x => { x._owner = 'Moi (admin)'; allF.push(x); });
+    }
+  }
+  // Aussi depuis adminUsers
+  adminUsers.forEach(u => {
+    const key = 'bouclier_factures_' + u.id;
+    const f = JSON.parse(localStorage.getItem(key) || '[]');
+    f.forEach(x => { x._owner = u.name || u.email; allF.push(x); });
   });
-  if(titles[name]) document.getElementById('page-title').textContent=titles[name];
+  return allF;
+}
+
+function fmtEuro(n) { return Number(n).toLocaleString('fr-FR') + '€'; }
+function fmtDate(d) { if (!d) return '—'; return new Date(d).toLocaleDateString('fr-FR'); }
+
+function planBadge(plan, type) {
+  if (type === 'offert') return '<span class="badge b-gift">🎁 ' + (plan||'Pro') + ' offert</span>';
+  if (plan === 'pro')    return '<span class="badge b-purple">Bouclier Pro</span>';
+  if (plan === 'studio') return '<span class="badge b-gold">Studio</span>';
+  return '<span class="badge b-green">Solo</span>';
+}
+
+function planMRR(plan, type) {
+  if (type === 'offert' || type === 'essai') return 0;
+  if (plan === 'pro') return 59;
+  if (plan === 'studio') return 299;
+  return 29;
+}
+
+// ── DASHBOARD ──
+function renderDashboard() {
+  const totalUsers = adminUsers.length + 1; // +1 pour toi
+  const paying = adminUsers.filter(u => u.type === 'payant').length + 1;
+  const gifts = adminUsers.filter(u => u.type === 'offert').length;
+  const allF = getAllFactures();
+  const mrr = adminUsers.reduce((a,u) => a + planMRR(u.plan, u.type), 59); // toi = pro payant
+  const ca = allF.reduce((a,f) => a + Number(f.montant||0), 0);
+  const legal = allF.filter(f => f.statut === 'huissier').length;
+
+  document.getElementById('kpi-users').textContent = totalUsers;
+  document.getElementById('kpi-users-d').textContent = totalUsers + ' compte(s) créé(s)';
+  document.getElementById('kpi-paying').textContent = paying;
+  document.getElementById('kpi-paying-d').textContent = paying + ' abonnement(s) actif(s)';
+  document.getElementById('kpi-gifts').textContent = gifts;
+  document.getElementById('kpi-factures').textContent = allF.length;
+  document.getElementById('kpi-mrr').textContent = fmtEuro(mrr);
+  document.getElementById('kpi-ca').textContent = fmtEuro(ca);
+  document.getElementById('kpi-relances').textContent = allF.filter(f=>['retard','ia'].includes(f.statut)).length;
+  document.getElementById('kpi-legal').textContent = legal;
+
+  // Dernières inscriptions
+  const listEl = document.getElementById('last-signups-list');
+  const allUsers = [{name:'Alex (toi)', email: ADMIN_EMAIL, plan:'pro', type:'payant', createdAt: new Date().toISOString()}, ...adminUsers];
+  if (allUsers.length === 0) {
+    listEl.innerHTML = '<div class="empty-state"><div class="empty-icon">👥</div><div class="empty-title">Aucun utilisateur</div></div>';
+    return;
+  }
+  document.getElementById('last-signups-sub').textContent = allUsers.length + ' utilisateur(s)';
+  listEl.innerHTML = '<div class="dt-head" style="grid-template-columns:1fr 1fr 1fr;"><div class="dt-th">Nom</div><div class="dt-th">Plan</div><div class="dt-th">Type</div></div>' +
+    allUsers.slice().reverse().slice(0,6).map(u => `<div class="dt-row" style="grid-template-columns:1fr 1fr 1fr;">
+      <div><div class="dt-name">${u.name||u.email}</div><div class="dt-meta">${u.email||''}</div></div>
+      <div>${planBadge(u.plan, u.type)}</div>
+      <div><span class="badge ${u.type==='offert'?'b-gift':u.type==='payant'?'b-green':'b-grey'}">${u.type==='offert'?'🎁 Offert':u.type==='payant'?'Payant':'Essai'}</span></div>
+    </div>`).join('');
+}
+
+// ── USERS ──
+function renderUsers() {
+  const search = (document.getElementById('search-users')?.value||'').toLowerCase();
+  const allUsers = [{id:'admin', name:'Alex (toi)', email: ADMIN_EMAIL, plan:'pro', type:'payant', note:'Compte admin'}, ...adminUsers];
+  const filtered = allUsers.filter(u => u.name?.toLowerCase().includes(search) || u.email?.toLowerCase().includes(search));
+  const el = document.getElementById('users-list');
+  if (filtered.length === 0) {
+    el.innerHTML = '<div class="empty-state"><div class="empty-icon">👥</div><div class="empty-title">Aucun résultat</div></div>';
+    return;
+  }
+  const allF = getAllFactures();
+  el.innerHTML = filtered.map(u => {
+    const userF = allF.filter(f => f._owner === (u.id === 'admin' ? 'Moi (admin)' : (u.name||u.email)));
+    const isAdmin = u.id === 'admin';
+    return `<div class="dt-row" style="grid-template-columns:2fr 1.2fr 1fr 1fr 1fr .8fr;">
+      <div><div class="dt-name">${u.name||'—'} ${isAdmin?'<span style="font-size:.55rem;color:var(--purple);margin-left:.25rem;">ADMIN</span>':''}</div><div class="dt-meta">${u.note||''}</div></div>
+      <div class="dt-meta">${u.email}</div>
+      <div>${planBadge(u.plan, u.type)}</div>
+      <div class="dt-val" style="color:var(--text)">${userF.length}</div>
+      <div class="dt-meta">${fmtDate(u.createdAt||new Date())}</div>
+      <div>${isAdmin ? '<span style="font-size:.65rem;color:var(--muted)">—</span>' : `<button class="btn-ghost" onclick="openEditPlan('${u.id}')">Modifier</button>`}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── ABONNEMENTS ──
+function renderAbonnements() {
+  const solo = adminUsers.filter(u => u.plan==='solo' && u.type!=='offert').length;
+  const pro = adminUsers.filter(u => u.plan==='pro' && u.type!=='offert').length + 1; // +1 toi
+  const gifts = adminUsers.filter(u => u.type==='offert').length;
+  document.getElementById('plan-solo').textContent = solo;
+  document.getElementById('plan-pro').textContent = pro;
+  document.getElementById('plan-gift').textContent = gifts;
+  document.getElementById('plan-solo-rev').textContent = fmtEuro(solo * 29) + '/mois';
+  document.getElementById('plan-pro-rev').textContent = fmtEuro(pro * 59) + '/mois';
+
+  const allUsers = [{id:'admin', name:'Alex (toi)', email: ADMIN_EMAIL, plan:'pro', type:'payant'}, ...adminUsers];
+  const el = document.getElementById('abonnements-list');
+  if (allUsers.length === 0) { el.innerHTML = '<div class="empty-state"><div class="empty-icon">💳</div><div class="empty-title">Aucun abonnement</div></div>'; return; }
+  el.innerHTML = allUsers.map(u => {
+    const isAdmin = u.id === 'admin';
+    return `<div class="dt-row" style="grid-template-columns:2fr 1.5fr 1fr 1fr 1fr;">
+      <div class="dt-name">${u.name||'—'}</div>
+      <div class="dt-meta">${u.email}</div>
+      <div>${planBadge(u.plan, u.type)}</div>
+      <div><span class="badge ${u.type==='offert'?'b-gift':u.type==='payant'?'b-green':'b-grey'}">${u.type==='offert'?'🎁 Offert':u.type==='payant'?'💳 Payant':'⏳ Essai'}</span></div>
+      <div>${isAdmin ? '<span style="font-size:.65rem;color:var(--muted)">Admin</span>' : `<button class="btn-ghost" onclick="openEditPlan('${u.id}')">Changer</button>`}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── ALL FACTURES ──
+function renderAllFactures() {
+  const allF = getAllFactures();
+  const total = allF.length;
+  const ca = allF.reduce((a,f) => a + Number(f.montant||0), 0);
+  const legal = allF.filter(f => f.statut==='huissier').length;
+  document.getElementById('all-f-total').textContent = total;
+  document.getElementById('all-f-ca').textContent = fmtEuro(ca);
+  document.getElementById('all-f-legal').textContent = legal;
+  const el = document.getElementById('all-factures-list');
+  if (allF.length === 0) {
+    el.innerHTML = '<div class="empty-state"><div class="empty-icon">📄</div><div class="empty-title">Aucune facture</div><div class="empty-sub">Les factures créées par les utilisateurs apparaîtront ici.</div></div>';
+    return;
+  }
+  const statusBadge = s => ({
+    'payée':'<span class="badge b-green">✓ Payée</span>',
+    'envoyée':'<span class="badge b-blue">Envoyée</span>',
+    'retard':'<span class="badge b-gold">En retard</span>',
+    'huissier':'<span class="badge b-red">⚖ Huissier</span>',
+    'brouillon':'<span class="badge b-grey">Brouillon</span>',
+  }[s] || `<span class="badge b-grey">${s}</span>`);
+  el.innerHTML = [...allF].reverse().map(f => `<div class="dt-row" style="grid-template-columns:1.5fr 2fr 1fr 1fr 1fr;">
+    <div class="dt-meta">${f._owner||'—'}</div>
+    <div><div class="dt-name">${f.client}</div><div class="dt-meta">${f.desc||''}</div></div>
+    <div class="dt-val" style="color:var(--text)">${fmtEuro(f.montant)}</div>
+    <div class="dt-meta">${fmtDate(f.echeance)}</div>
+    <div>${statusBadge(f.statut)}</div>
+  </div>`).join('');
+}
+
+// ── SAAS ──
+function renderSaas() {
+  const mrr = adminUsers.reduce((a,u) => a + planMRR(u.plan, u.type), 59);
+  const paying = adminUsers.filter(u=>u.type==='payant').length + 1;
+  const gifts = adminUsers.filter(u=>u.type==='offert').length;
+  document.getElementById('saas-arr').textContent = fmtEuro(mrr * 12);
+  document.getElementById('saas-mrr').textContent = fmtEuro(mrr);
+  document.getElementById('saas-paying').textContent = paying;
+  document.getElementById('saas-gifts').textContent = gifts;
+  document.getElementById('saas-arpu').textContent = paying > 0 ? fmtEuro(Math.round(mrr/paying)) : '—';
+  const solo = adminUsers.filter(u=>u.plan==='solo'&&u.type!=='offert').length;
+  const pro = adminUsers.filter(u=>u.plan==='pro'&&u.type!=='offert').length + 1;
+  const total = solo + pro + (adminUsers.filter(u=>u.plan==='studio').length);
+  document.getElementById('saas-plans').innerHTML = total === 0 ? '<div class="empty-state"><div class="empty-icon">📊</div><div class="empty-title">Pas encore de données</div></div>' :
+    `<div style="display:flex;flex-direction:column;gap:1rem;">
+      <div><div style="display:flex;justify-content:space-between;margin-bottom:.4rem;"><span style="font-size:.73rem;color:var(--subtle)">Solo (29€)</span><span style="font-family:'Inter',sans-serif;font-size:.78rem;font-weight:600;color:var(--text)">${solo} abonné(s)</span></div><div class="progress-bar"><div class="progress-fill" style="width:${total>0?Math.round(solo/total*100):0}%;background:var(--emerald)"></div></div></div>
+      <div><div style="display:flex;justify-content:space-between;margin-bottom:.4rem;"><span style="font-size:.73rem;color:var(--subtle)">Bouclier Pro (59€)</span><span style="font-family:'Inter',sans-serif;font-size:.78rem;font-weight:600;color:var(--text)">${pro} abonné(s)</span></div><div class="progress-bar"><div class="progress-fill" style="width:${total>0?Math.round(pro/total*100):0}%;background:var(--purple)"></div></div></div>
+      <div><div style="display:flex;justify-content:space-between;margin-bottom:.4rem;"><span style="font-size:.73rem;color:var(--subtle)">🎁 Offerts (0€)</span><span style="font-family:'Inter',sans-serif;font-size:.78rem;font-weight:600;color:#f9a8d4">${gifts} compte(s)</span></div><div class="progress-bar"><div class="progress-fill" style="width:${total>0?Math.round(gifts/(total+gifts)*100):0}%;background:#ec4899"></div></div></div>
+    </div>`;
+}
+
+// ── LOGS ──
+function renderLogs() {
+  const allF = getAllFactures();
+  const late = allF.filter(f=>['retard','ia'].includes(f.statut)).length;
+  const legal = allF.filter(f=>f.statut==='huissier').length;
+  document.getElementById('log-total').textContent = late + legal;
+  document.getElementById('log-relances').textContent = late;
+  document.getElementById('log-legal').textContent = legal;
+  const paid = allF.filter(f=>f.statut==='payée').length;
+  document.getElementById('log-taux').textContent = allF.length > 0 ? Math.round(paid/allF.length*100)+'%' : '—';
+  const el = document.getElementById('ia-log-list');
+  if (late === 0 && legal === 0) {
+    el.innerHTML = '<div class="empty-state"><div class="empty-icon">🤖</div><div class="empty-title">Aucune activité IA</div><div class="empty-sub">Les logs apparaîtront dès que l\'IA interviendra.</div></div>';
+    return;
+  }
+  el.innerHTML = allF.filter(f=>['retard','ia','huissier'].includes(f.statut)).map(f => `
+    <div class="log-item">
+      <div class="log-icon" style="background:${f.statut==='huissier'?'var(--red-dim)':'var(--purple-dim)'}">${f.statut==='huissier'?'⚖️':'🤖'}</div>
+      <div class="log-body"><div class="log-text"><strong>${f._owner}</strong> — ${f.client} · ${fmtEuro(f.montant)}</div><div class="log-time">${fmtDate(f.echeance)}</div></div>
+      <div class="log-level ${f.statut==='huissier'?'ll-legal':'ll-ok'}">${f.statut.toUpperCase()}</div>
+    </div>`).join('');
+}
+
+// ── EDIT PLAN ──
+function openEditPlan(userId) {
+  const u = adminUsers.find(x => x.id === userId);
+  if (!u) return;
+  editingUserId = userId;
+  document.getElementById('modal-edit-user-info').innerHTML = `<strong style="color:var(--text)">${u.name||u.email}</strong><br><span style="color:var(--muted);font-size:.7rem;">${u.email}</span>`;
+  document.getElementById('edit-plan').value = u.plan || 'solo';
+  document.getElementById('edit-type').value = u.type || 'payant';
+  document.getElementById('edit-note').value = u.note || '';
+  openModal('modal-edit-plan');
+}
+
+function saveUserPlan() {
+  const u = adminUsers.find(x => x.id === editingUserId);
+  if (!u) return;
+  u.plan = document.getElementById('edit-plan').value;
+  u.type = document.getElementById('edit-type').value;
+  u.note = document.getElementById('edit-note').value;
+  saveAdminUsers();
+  closeModal('modal-edit-plan');
+  renderAbonnements();
+  renderUsers();
+  renderDashboard();
+  renderSaas();
+  addLog(`Plan modifié pour <strong>${u.name||u.email}</strong> → ${u.plan} (${u.type})`,'ll-gift');
+  showToast('✅ Abonnement mis à jour pour ' + (u.name||u.email));
+}
+
+// ── ADD USER ──
+let nextUserId = adminUsers.length + 1;
+function addUser() {
+  const name  = document.getElementById('add-name').value.trim();
+  const email = document.getElementById('add-email').value.trim();
+  const plan  = document.getElementById('add-plan').value;
+  const type  = document.getElementById('add-type').value;
+  const note  = document.getElementById('add-note').value.trim();
+  if (!name || !email) { showToast('⚠️ Remplissez le nom et l\'email.'); return; }
+  const newUser = { id: 'u' + nextUserId++, name, email, plan, type, note, createdAt: new Date().toISOString() };
+  adminUsers.push(newUser);
+  saveAdminUsers();
+  closeModal('modal-add-user');
+  document.getElementById('add-name').value=''; document.getElementById('add-email').value=''; document.getElementById('add-note').value='';
+  renderAll2();
+  addLog(`Utilisateur ajouté : <strong>${name}</strong> · ${email} · ${plan} (${type})`,'ll-ok');
+  showToast('✅ Compte créé pour ' + name);
+}
+
+function renderAll2() { renderDashboard(); renderUsers(); renderAbonnements(); renderAllFactures(); renderSaas(); renderLogs(); }
+
+// ── LOG ACTIVITY ──
+function addLog(text, level='ll-info') {
+  const el = document.getElementById('activity-log');
+  const now = new Date().toLocaleTimeString('fr-FR');
+  const icons = {'ll-ok':'✅','ll-gift':'🎁','ll-legal':'⚖️','ll-warn':'⚠️','ll-info':'ℹ️'};
+  const item = `<div class="log-item"><div class="log-icon" style="background:var(--purple-dim)">${icons[level]||'ℹ️'}</div><div class="log-body"><div class="log-text">${text}</div><div class="log-time">${now}</div></div><div class="log-level ${level}">LOG</div></div>`;
+  el.insertAdjacentHTML('afterbegin', item);
+}
+
+// ── MODALS ──
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(el => el.addEventListener('click', function(e){ if(e.target===this) closeModal(this.id); }));
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 3000);
 }
 </script>
 </body>
