@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bouclier — La protection financière des freelances</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -272,7 +272,7 @@ h1 em { font-style: italic; color: var(--emerald); }
   border-radius: var(--r2); padding: 1rem;
 }
 .kpi-label { font-size: .62rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: .35rem; }
-.kpi-val { font-family: 'Instrument Serif', serif; font-size: 1.8rem; line-height: 1; color: var(--text); }
+.kpi-val { font-family: 'Inter', sans-serif; font-size: 1.7rem; font-weight: 600; line-height: 1; color: var(--text); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
 .kpi-val.green { color: var(--emerald); }
 .kpi-val.gold  { color: var(--gold); }
 .kpi-delta { font-size: .62rem; margin-top: .3rem; color: var(--muted); }
@@ -291,7 +291,7 @@ h1 em { font-style: italic; color: var(--emerald); }
 .inv-row:hover { background: var(--raised); }
 .inv-client { font-size: .75rem; font-weight: 500; color: var(--text); }
 .inv-ref { font-size: .62rem; color: var(--muted); margin-top: 1px; }
-.inv-amount { font-size: .78rem; font-weight: 600; color: var(--text); font-family: 'Instrument Serif', serif; }
+.inv-amount { font-size: .82rem; font-weight: 600; color: var(--text); font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
 .inv-date { font-size: .68rem; color: var(--muted); }
 .badge {
   display: inline-flex; align-items: center; gap: .3rem;
@@ -362,7 +362,7 @@ h2 em { font-style: italic; color: var(--emerald); }
 .hiw-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--r3); overflow: hidden; margin-top: 4rem; }
 .hiw-step { background: var(--deep); padding: 2.5rem 2rem; position: relative; transition: background .2s; }
 .hiw-step:hover { background: var(--surface); }
-.step-num { font-family: 'Instrument Serif', serif; font-size: 3.5rem; color: var(--raised); line-height: 1; margin-bottom: .5rem; }
+.step-num { font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; letter-spacing: -0.03em; font-size: 3.5rem; color: var(--raised); line-height: 1; margin-bottom: .5rem; }
 .step-icon-box {
   width: 44px; height: 44px; border-radius: var(--r2);
   display: flex; align-items: center; justify-content: center;
@@ -422,8 +422,9 @@ h2 em { font-style: italic; color: var(--emerald); }
 }
 .stat-col:last-child { border-right: none; }
 .stat-big {
-  font-family: 'Instrument Serif', serif;
-  font-size: 3.25rem; line-height: 1; color: var(--emerald);
+  font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em; font-weight: 700;
+  font-size: 3rem; line-height: 1; color: var(--emerald);
 }
 .stat-small { font-size: .75rem; color: var(--muted); margin-top: .5rem; line-height: 1.55; }
 
@@ -452,7 +453,7 @@ h2 em { font-style: italic; color: var(--emerald); }
   white-space: nowrap;
 }
 .plan-name { font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: .75rem; }
-.plan-price { font-family: 'Instrument Serif', serif; font-size: 3rem; line-height: 1; color: var(--text); }
+.plan-price { font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; letter-spacing: -0.04em; font-size: 3rem; font-weight: 700; line-height: 1; color: var(--text); }
 .plan-price sup { font-size: 1.2rem; vertical-align: super; font-family: 'Geist', sans-serif; }
 .plan-price sub { font-size: .9rem; color: var(--muted); font-family: 'Geist', sans-serif; }
 .plan-desc { font-size: .78rem; color: var(--muted); margin-top: .75rem; margin-bottom: 1.5rem; line-height: 1.55; }
@@ -495,7 +496,7 @@ h2 em { font-style: italic; color: var(--emerald); }
 .testi-info { }
 .testi-name { font-size: .78rem; font-weight: 600; color: var(--text); }
 .testi-role { font-size: .68rem; color: var(--muted); margin-top: 1px; }
-.testi-saved { font-family: 'Instrument Serif', serif; font-size: .95rem; color: var(--emerald); margin-top: .25rem; }
+.testi-saved { font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; font-size: .88rem; font-weight: 600; color: var(--emerald); margin-top: .25rem; }
 
 /* ─── SECURITY ─── */
 .security-sec { background: var(--deep); }
