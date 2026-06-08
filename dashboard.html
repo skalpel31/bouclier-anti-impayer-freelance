@@ -246,7 +246,7 @@ body{font-family:'Geist',system-ui,sans-serif;background:var(--night);color:var(
 <!-- MAIN -->
 <div class="main">
   <div class="topbar">
-    <span class="page-title" id="page-title">Vue d'ensemble</span>
+    <div style="display:flex;align-items:center;gap:.75rem;"><span class="page-title" id="page-title">Vue d'ensemble</span><span id="mode-badge" style="font-size:.62rem;padding:.25rem .65rem;border-radius:999px;border:1px solid;background:rgba(16,185,129,.1);color:#34d399;border-color:rgba(16,185,129,.2);">🏢 Mode Pro (B2B)</span></div>
     <div class="topbar-right">
       <button class="btn-new" onclick="openModal('modal-import')" style="background:var(--raised);border:1px solid var(--border2);color:var(--subtle);margin-right:.5rem;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
@@ -326,7 +326,7 @@ body{font-family:'Geist',system-ui,sans-serif;background:var(--night);color:var(
     <!-- ── RELANCES ── -->
     <div class="tab-content" id="tab-relances">
       <div class="card">
-        <div class="card-head"><div><div class="card-title">Relances actives</div><div class="card-sub">Gérées automatiquement par l'IA</div></div></div>
+        <div class="card-head"><div><div class="card-title">Relances actives</div><div class="card-sub" id="relance-mode-label">Gérées automatiquement par l'IA — ton adapté à votre mode</div></div></div>
         <div id="relances-list">
           <div class="empty-state"><div class="empty-icon">🛡</div><div class="empty-title">Aucune relance active</div><div class="empty-sub">L'IA Bouclier prend le relais automatiquement dès qu'une facture dépasse son échéance.</div></div>
         </div>
@@ -505,6 +505,9 @@ let factures = JSON.parse(localStorage.getItem('bouclier_factures') || '[]');
   if (currentUser.email === ADMIN_EMAIL) {
     document.getElementById('btn-admin-link').style.display = 'flex';
   }
+  // Mode B2B/B2C
+  var userMode = meta?.mode || 'b2b';
+  applyMode(userMode);
   // Préremplis profil
   document.getElementById('profil-email').value = currentUser.email;
   if (meta?.full_name) {
@@ -931,6 +934,34 @@ function showScoring(data) {
     '</div>';
 }
 </script>
+
+
+// ── MODE B2B / B2C ──
+function applyMode(mode) {
+  var isB2C = mode === 'b2c';
+  // Badge mode en haut
+  var badge = document.getElementById('mode-badge');
+  if (badge) {
+    badge.textContent = isB2C ? '👤 Mode Particulier (B2C)' : '🏢 Mode Pro (B2B)';
+    badge.style.background = isB2C ? 'rgba(96,165,250,.1)' : 'rgba(16,185,129,.1)';
+    badge.style.color = isB2C ? '#93c5fd' : '#34d399';
+    badge.style.borderColor = isB2C ? 'rgba(96,165,250,.2)' : 'rgba(16,185,129,.2)';
+  }
+  // Adapter les labels de relances
+  var relanceTitle = document.getElementById('relance-mode-label');
+  if (relanceTitle) {
+    relanceTitle.textContent = isB2C
+      ? 'Relances IA — ton humain et bienveillant, conforme droit de la consommation'
+      : 'Relances IA — ton corporate, loi LME, pénalités de retard automatiques';
+  }
+  // Adapter scoring label
+  var scoringLabel = document.getElementById('scoring-mode-label');
+  if (scoringLabel) {
+    scoringLabel.textContent = isBzC
+      ? 'Analyse comportementale (B2C)'
+      : 'Scoring financier entreprise — INSEE · Infogreffe · Pappers · BODACC';
+  }
+}
 
 </body>
 </html>
