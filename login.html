@@ -7,15 +7,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-:root{--night:#080c10;--deep:#0d1117;--surface:#131920;--raised:#1c2530;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);--text:#e8edf2;--muted:#6b7a8d;--subtle:#8f9fb3;--emerald:#10b981;--emerald2:#059669;--emerald-dim:rgba(16,185,129,0.1);--red:#f87171;}
-body{font-family:'Geist',system-ui,sans-serif;background:var(--night);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;-webkit-font-smoothing:antialiased;position:relative;overflow:hidden;}
+:root{
+  --night:#080c10;--deep:#0d1117;--surface:#131920;--raised:#1c2530;
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);
+  --text:#e8edf2;--muted:#6b7a8d;--subtle:#8f9fb3;
+  --emerald:#10b981;--emerald2:#059669;--red:#f87171;
+}
+body{font-family:'Geist',system-ui,sans-serif;background:var(--night);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;-webkit-font-smoothing:antialiased;overflow:hidden;}
 body::before{content:'';position:fixed;top:-20%;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(16,185,129,0.07),transparent 70%);pointer-events:none;}
 .card{background:var(--deep);border:1px solid var(--border2);border-radius:16px;width:100%;max-width:400px;padding:2.5rem;box-shadow:0 40px 80px rgba(0,0,0,.6);position:relative;z-index:1;}
 .brand{display:flex;align-items:center;gap:.65rem;margin-bottom:2rem;}
 .brand-icon{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#10b981,#047857);display:flex;align-items:center;justify-content:center;font-size:1rem;}
 .brand-name{font-family:'Instrument Serif',serif;font-size:1.3rem;color:var(--text);}
-h1{font-family:'Instrument Serif',serif;font-size:1.75rem;letter-spacing:-0.02em;margin-bottom:.35rem;}
-.sub{font-size:.8rem;color:var(--muted);margin-bottom:2rem;line-height:1.6;}
 .tabs{display:flex;background:var(--surface);border-radius:8px;padding:3px;margin-bottom:1.75rem;}
 .tab{flex:1;padding:.5rem;text-align:center;font-size:.78rem;border-radius:6px;cursor:pointer;transition:all .2s;color:var(--muted);border:none;background:none;font-family:inherit;}
 .tab.active{background:var(--raised);color:var(--text);font-weight:500;}
@@ -26,20 +29,16 @@ h1{font-family:'Instrument Serif',serif;font-size:1.75rem;letter-spacing:-0.02em
 .form-input::placeholder{color:var(--muted);}
 .btn-main{width:100%;background:var(--emerald);color:#fff;border:none;font-family:inherit;font-size:.9rem;font-weight:500;padding:.8rem;border-radius:8px;cursor:pointer;transition:background .2s;margin-top:.5rem;}
 .btn-main:hover{background:var(--emerald2);}
-.btn-main:disabled{opacity:.6;cursor:not-allowed;}
 .error-box{display:none;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.25);border-radius:6px;padding:.65rem .9rem;font-size:.73rem;color:var(--red);margin-bottom:.85rem;}
 .success-box{display:none;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);border-radius:6px;padding:.65rem .9rem;font-size:.73rem;color:var(--emerald);margin-bottom:.85rem;}
-.divider{display:flex;align-items:center;gap:.75rem;margin:1.25rem 0;}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
-.divider span{font-size:.65rem;color:var(--muted);white-space:nowrap;}
-.back-link{display:block;text-align:center;margin-top:1.25rem;font-size:.73rem;color:var(--muted);text-decoration:none;}
-.back-link:hover{color:var(--text);}
-.admin-link{display:block;text-align:center;margin-top:.75rem;font-size:.68rem;color:rgba(167,139,250,.5);text-decoration:none;transition:color .2s;}
-.admin-link:hover{color:#a78bfa;}
 .loading{display:none;text-align:center;padding:2rem 0;}
 .spinner{width:40px;height:40px;border:2px solid rgba(16,185,129,.2);border-top-color:var(--emerald);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 1rem;}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-text{font-size:.82rem;color:var(--subtle);}
+.back-link{display:block;text-align:center;margin-top:1.25rem;font-size:.73rem;color:var(--muted);text-decoration:none;}
+.back-link:hover{color:var(--text);}
+.admin-link{display:block;text-align:center;margin-top:.75rem;font-size:.68rem;color:rgba(167,139,250,.4);cursor:pointer;}
+.admin-link:hover{color:#a78bfa;}
 </style>
 </head>
 <body>
@@ -49,18 +48,14 @@ h1{font-family:'Instrument Serif',serif;font-size:1.75rem;letter-spacing:-0.02em
     <span class="brand-name">Bouclier</span>
   </div>
 
-  <!-- TABS -->
   <div class="tabs">
     <button class="tab active" id="tab-login" onclick="switchMode('login')">Se connecter</button>
     <button class="tab" id="tab-signup" onclick="switchMode('signup')">Créer un compte</button>
   </div>
 
-  <!-- FORM -->
   <div id="form-area">
     <div class="error-box" id="error-box"></div>
     <div class="success-box" id="success-box"></div>
-
-    <!-- nom (signup only) -->
     <div class="form-group" id="group-name" style="display:none">
       <label class="form-label">Prénom & Nom</label>
       <input class="form-input" id="input-name" type="text" placeholder="Sophie Martin">
@@ -71,92 +66,155 @@ h1{font-family:'Instrument Serif',serif;font-size:1.75rem;letter-spacing:-0.02em
     </div>
     <div class="form-group">
       <label class="form-label">Mot de passe</label>
-      <input class="form-input" id="input-pwd" type="password" placeholder="••••••••••">
+      <div style="position:relative;">
+        <input class="form-input" id="input-pwd" type="password" placeholder="••••••••••" style="padding-right:2.75rem;">
+        <button type="button" onclick="togglePwd('input-pwd','eye1')" style="position:absolute;right:.75rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);padding:0;display:flex;align-items:center;">
+          <svg id="eye1" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="form-group" id="group-confirm" style="display:none">
+      <label class="form-label">Confirmer le mot de passe</label>
+      <div style="position:relative;">
+        <input class="form-input" id="input-confirm" type="password" placeholder="••••••••••" style="padding-right:2.75rem;">
+        <button type="button" onclick="togglePwd('input-confirm','eye2')" style="position:absolute;right:.75rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);padding:0;display:flex;align-items:center;">
+          <svg id="eye2" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
     </div>
     <button class="btn-main" id="btn-submit" onclick="handleSubmit()">Se connecter</button>
   </div>
 
-  <!-- LOADING -->
   <div class="loading" id="loading-area">
     <div class="spinner"></div>
     <div class="loading-text" id="loading-msg">Connexion en cours…</div>
   </div>
 
   <a href="index.html" class="back-link">← Retour à l'accueil</a>
-  <a href="#" class="admin-link" onclick="adminLogin()">Accès administrateur</a>
+  <span class="admin-link" onclick="adminLogin()">Accès administrateur</span>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const sb = supabase.createClient('https://nqaerwhxyeogtykyajyt.supabase.co', 'sb_publishable_3_zaIZvW43rZ1exWyK1Pfg_LiAXd6fL');
-let mode = 'login';
+var SUPA_URL = 'https://nqaerwhxyeogtykyajyt.supabase.co';
+var SUPA_KEY = 'sb_publishable_3_zaIZvW43rZ1exWyK1Pfg_LiAXd6fL';
+var ADMIN_EMAIL = 'alex.skp31@gmail.com';
+var sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+var mode = 'login';
 
-// Si déjà connecté → redirect
-sb.auth.getSession().then(({{'data': d}}) => {
-  if(d.session) window.location.href = 'dashboard.html';
+// Si déjà connecté redirect direct
+sb.auth.getSession().then(function(result) {
+  if (result.data && result.data.session) {
+    window.location.href = 'dashboard.html';
+  }
 });
+
+function togglePwd(inputId, eyeId) {
+  var input = document.getElementById(inputId);
+  var eye   = document.getElementById(eyeId);
+  if (input.type === 'password') {
+    input.type = 'text';
+    eye.style.color = 'var(--emerald)';
+  } else {
+    input.type = 'password';
+    eye.style.color = 'var(--muted)';
+  }
+}
 
 function switchMode(m) {
   mode = m;
-  document.getElementById('tab-login').classList.toggle('active', m==='login');
-  document.getElementById('tab-signup').classList.toggle('active', m==='signup');
-  document.getElementById('group-name').style.display = m==='signup' ? 'block' : 'none';
-  document.getElementById('btn-submit').textContent = m==='login' ? 'Se connecter' : 'Créer mon compte';
+  document.getElementById('tab-login').classList.toggle('active', m === 'login');
+  document.getElementById('tab-signup').classList.toggle('active', m === 'signup');
+  document.getElementById('group-name').style.display    = m === 'signup' ? 'block' : 'none';
+  document.getElementById('group-confirm').style.display = m === 'signup' ? 'block' : 'none';
+  document.getElementById('btn-submit').textContent = m === 'login' ? 'Se connecter' : 'Créer mon compte';
   document.getElementById('error-box').style.display = 'none';
   document.getElementById('success-box').style.display = 'none';
 }
 
 function showError(msg) {
-  const el = document.getElementById('error-box');
-  el.textContent = msg; el.style.display = 'block';
-}
-function showSuccess(msg) {
-  const el = document.getElementById('success-box');
-  el.textContent = msg; el.style.display = 'block';
-}
-function setLoading(on, msg='') {
-  document.getElementById('form-area').style.display = on ? 'none' : 'block';
-  document.getElementById('loading-area').style.display = on ? 'block' : 'none';
-  if(msg) document.getElementById('loading-msg').textContent = msg;
+  var el = document.getElementById('error-box');
+  el.textContent = msg;
+  el.style.display = 'block';
 }
 
-async function handleSubmit() {
-  const email = document.getElementById('input-email').value.trim();
-  const pwd   = document.getElementById('input-pwd').value;
-  const name  = document.getElementById('input-name').value.trim();
+function showSuccess(msg) {
+  var el = document.getElementById('success-box');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function setLoading(on, msg) {
+  document.getElementById('form-area').style.display = on ? 'none' : 'block';
+  document.getElementById('loading-area').style.display = on ? 'block' : 'none';
+  if (msg) document.getElementById('loading-msg').textContent = msg;
+}
+
+function handleSubmit() {
+  var email = document.getElementById('input-email').value.trim();
+  var pwd   = document.getElementById('input-pwd').value;
+  var name  = document.getElementById('input-name').value.trim();
+
   document.getElementById('error-box').style.display = 'none';
   document.getElementById('success-box').style.display = 'none';
-  if(!email || !pwd) { showError('Veuillez remplir tous les champs.'); return; }
-  if(mode==='signup' && !name) { showError('Veuillez entrer votre nom.'); return; }
-  if(mode==='login') {
+
+  if (!email || !pwd) { showError('Veuillez remplir tous les champs.'); return; }
+  if (mode === 'signup' && !name) { showError('Veuillez entrer votre nom.'); return; }
+
+  if (mode === 'login') {
     setLoading(true, 'Connexion en cours…');
-    const {error} = await sb.auth.signInWithPassword({email, password:pwd});
-    if(error) { setLoading(false); showError('Email ou mot de passe incorrect.'); return; }
-    setLoading(true, 'Chargement de votre espace…');
-    setTimeout(() => window.location.href = 'dashboard.html', 600);
+    sb.auth.signInWithPassword({ email: email, password: pwd }).then(function(result) {
+      if (result.error) {
+        setLoading(false);
+        showError('Email ou mot de passe incorrect.');
+        return;
+      }
+      setLoading(true, 'Chargement de votre espace…');
+      setTimeout(function() { window.location.href = 'dashboard.html'; }, 800);
+    });
   } else {
+    var confirm = document.getElementById('input-confirm').value;
+    if (pwd !== confirm) { showError('Les mots de passe ne correspondent pas.'); return; }
+    if (pwd.length < 6) { showError('Le mot de passe doit contenir au moins 6 caractères.'); return; }
     setLoading(true, 'Création de votre compte…');
-    const {error} = await sb.auth.signUp({email, password:pwd, options:{data:{full_name:name}}});
-    if(error) { setLoading(false); showError(error.message==='User already registered' ? 'Cet email est déjà utilisé.' : error.message); return; }
-    setLoading(false);
-    showSuccess('Compte créé ! Vérifiez votre email pour confirmer, puis connectez-vous.');
-    switchMode('login');
+    sb.auth.signUp({
+      email: email,
+      password: pwd,
+      options: { data: { full_name: name } }
+    }).then(function(result) {
+      if (result.error) {
+        setLoading(false);
+        var msg = result.error.message;
+        if (msg.indexOf('already') !== -1) msg = 'Cet email est déjà utilisé. Connectez-vous.';
+        showError(msg);
+        return;
+      }
+      setLoading(false);
+      showSuccess('Compte créé avec succès ! Connectez-vous maintenant.');
+      switchMode('login');
+    });
   }
 }
 
-async function adminLogin() {
-  const email = prompt('Email admin :');
-  const pwd   = prompt('Mot de passe admin :');
-  if(!email||!pwd) return;
-  const {data,error} = await sb.auth.signInWithPassword({email,password:pwd});
-  if(error) { alert('Accès refusé.'); return; }
-  // Vérifie si admin via metadata
-  const meta = data.user?.user_metadata;
-  if(meta?.role === 'admin') { window.location.href = 'admin.html'; }
-  else { alert('Vous n\'avez pas les droits administrateur.'); await sb.auth.signOut(); }
+function adminLogin() {
+  var email = prompt('Email admin :');
+  if (!email) return;
+  var pwd = prompt('Mot de passe :');
+  if (!pwd) return;
+  sb.auth.signInWithPassword({ email: email, password: pwd }).then(function(result) {
+    if (result.error) { alert('Accès refusé.'); return; }
+    if (result.data.user.email === ADMIN_EMAIL) {
+      window.location.href = 'admin.html';
+    } else {
+      alert('Vous n\'avez pas les droits administrateur.');
+      sb.auth.signOut();
+    }
+  });
 }
 
-document.addEventListener('keydown', e => { if(e.key==='Enter') handleSubmit(); });
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') handleSubmit();
+});
 </script>
 </body>
 </html>
