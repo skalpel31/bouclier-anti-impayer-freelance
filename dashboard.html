@@ -390,7 +390,7 @@ body{font-family:'Geist',system-ui,sans-serif;background:var(--night);color:var(
                 <div style="font-size:1.1rem;font-weight:700;color:var(--text);">Bouclier Pro</div>
                 <div style="font-size:.72rem;color:var(--muted);margin-top:.25rem;">59€/mois · Essai gratuit en cours</div>
               </div>
-              <button class="btn-danger">Gérer l'abonnement</button>
+              <button class="btn-danger" onclick="openModal('modal-abo')">Gérer l'abonnement</button>
             </div>
           </div>
           <div class="card" style="margin-top:1.25rem;">
@@ -705,5 +705,48 @@ function showToast(msg) {
 // Ferme modal sur overlay click
 document.getElementById('modal-facture').addEventListener('click', function(e) { if (e.target === this) closeModal('modal-facture'); });
 </script>
+
+<!-- MODAL ABONNEMENT -->
+<div class="modal-overlay" id="modal-abo">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-abo')">✕</button>
+    <h3>Mon abonnement</h3>
+    <div id="abo-current" style="background:var(--emerald-dim);border:1px solid rgba(16,185,129,.2);border-radius:var(--r2);padding:1rem;margin-bottom:1.25rem;">
+      <div style="font-size:.62rem;color:var(--emerald);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.35rem;">Plan actuel</div>
+      <div style="font-size:1.1rem;font-weight:700;color:var(--text);" id="abo-plan-name">Essai gratuit</div>
+      <div style="font-size:.72rem;color:var(--muted);margin-top:.3rem;" id="abo-plan-detail">30 jours gratuits inclus</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:.75rem;margin-bottom:1.25rem;">
+      <div onclick="selectPlan('solo')" id="plan-card-solo" style="background:var(--raised);border:1px solid var(--border2);border-radius:var(--r2);padding:1rem;cursor:pointer;transition:border-color .15s;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div><div style="font-size:.8rem;font-weight:600;color:var(--text);">Solo</div><div style="font-size:.7rem;color:var(--muted);margin-top:.2rem;">Facturation + scoring + 3 relances IA</div></div>
+          <div style="font-family:'Inter',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);">29€<span style="font-size:.7rem;font-weight:400;color:var(--muted);">/mois</span></div>
+        </div>
+      </div>
+      <div onclick="selectPlan('pro')" id="plan-card-pro" style="background:var(--emerald-dim);border:1px solid rgba(16,185,129,.35);border-radius:var(--r2);padding:1rem;cursor:pointer;transition:border-color .15s;position:relative;">
+        <div style="position:absolute;top:-10px;right:1rem;background:var(--emerald);color:#fff;font-size:.58rem;font-weight:600;padding:.15rem .6rem;border-radius:999px;text-transform:uppercase;letter-spacing:.06em;">Recommandé</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div><div style="font-size:.8rem;font-weight:600;color:var(--text);">Bouclier Pro</div><div style="font-size:.7rem;color:var(--muted);margin-top:.2rem;">Tout Solo + relances illimitées + huissier + assurance</div></div>
+          <div style="font-family:'Inter',sans-serif;font-size:1.1rem;font-weight:700;color:var(--emerald);">59€<span style="font-size:.7rem;font-weight:400;color:var(--muted);">/mois</span></div>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--raised);border-radius:var(--r2);padding:.85rem;font-size:.72rem;color:var(--muted);line-height:1.6;margin-bottom:1.25rem;">
+      ℹ️ Pour changer de plan ou obtenir un accès offert, contactez le support ou votre administrateur Bouclier.
+    </div>
+    <div style="display:flex;gap:.75rem;justify-content:flex-end;">
+      <button class="btn-cancel" onclick="closeModal('modal-abo')" style="background:transparent;color:var(--muted);border:1px solid var(--border2);font-family:inherit;font-size:.78rem;padding:.6rem 1.25rem;border-radius:var(--r2);cursor:pointer;">Fermer</button>
+      <button class="btn-save" onclick="closeModal('modal-abo');showToast('✅ Demande envoyée à l\'administrateur.')">Demander un changement</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function selectPlan(plan) {
+  document.getElementById('plan-card-solo').style.borderColor = plan === 'solo' ? 'var(--emerald)' : 'var(--border2)';
+  document.getElementById('plan-card-pro').style.borderColor  = plan === 'pro'  ? 'rgba(16,185,129,.35)' : 'var(--border2)';
+}
+</script>
+
 </body>
 </html>
