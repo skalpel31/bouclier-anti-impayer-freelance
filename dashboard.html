@@ -489,7 +489,76 @@ const ADMIN_EMAIL  = 'alex.skp31@gmail.com';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null;
-let factures = JSON.parse(localStorage.getItem('bouclier_factures') || '[]');
+let factures = [];
+
+// ── SUPABASE DB ──
+async function loadFactures() {
+  const { data, error } = await sb
+    .from('factures')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) { console.error('Erreur chargement factures:', error); return; }
+  factures = (data || []).map(f => ({
+    id: f.id,
+    client: f.client,
+    montant: Number(f.montant),
+    echeance: f.echeance,
+    desc: f.description,
+    statut: f.statut,
+    imported: f.imported,
+    createdAt: f.created_at
+  }));
+  nextId = factures.length > 0 ? Math.max(...factures.map(f => f.id)) + 1 : 1;
+}
+
+async function insertFacture(fac) {
+  const { data, error } = await sb.from('factures').insert({
+    user_id: currentUser.id,
+    client: fac.client,
+    montant: fac.montant,
+    echeance: fac.echeance || null,
+    description: fac.desc || '',
+    statut: fac.statut,
+    imported: fac.imported || false
+  }).select().single();
+  if (error) { console.error('Erreur insertion:', error); return null; }
+  return data;
+}
+
+async function updateFactureStatut(id, statut) {
+  const { error } = await sb.from('factures').update({ statut }).eq('id', id);
+  if (error) console.error('Erreur update:', error);
+}
+
+async function deleteFactureDB(id) {
+  const { error } = await sb.from('factures').delete().eq('id', id);
+  if (error) console.error('Erreur delete:', error);
+}
+
+async function saveProfile(data) {
+  const { error } = await sb.from('profiles').upsert({
+    id: currentUser.id,
+    ...data
+  });
+  if (error) console.error('Erreur profil:', error);
+}
+
+async function loadProfile() {
+  const { data, error } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+  if (error || !data) return;
+  if (data.full_name) {
+    const parts = data.full_name.split(' ');
+    const el1 = document.getElementById('profil-prenom');
+    const el2 = document.getElementById('profil-nom');
+    if (el1) el1.value = parts[0] || '';
+    if (el2) el2.value = parts.slice(1).join(' ') || '';
+  }
+  if (data.siret) { const el = document.getElementById('profil-siret'); if(el) el.value = data.siret; }
+  if (data.raison_sociale) { const el = document.getElementById('profil-raison'); if(el) el.value = data.raison_sociale; }
+  if (data.tel) { const el = document.getElementById('profil-tel'); if(el) el.value = data.tel; }
+  if (data.tva) { const el = document.getElementById('profil-tva'); if(el) el.value = data.tva; }
+  if (data.mode) applyMode(data.mode);
+}
 
 // ── AUTH GUARD ──
 (async () => {
@@ -515,7 +584,9 @@ let factures = JSON.parse(localStorage.getItem('bouclier_factures') || '[]');
     document.getElementById('profil-prenom').value = parts[0] || '';
     document.getElementById('profil-nom').value = parts.slice(1).join(' ') || '';
   }
-  // Charge les données
+  // Charge les données depuis Supabase
+  await loadFactures();
+  await loadProfile();
   renderAll();
 })();
 
@@ -554,7 +625,9 @@ function statusBadge(s) {
   return map[s] || '<span class="badge b-draft">' + s + '</span>';
 }
 
-function saveFactures() { localStorage.setItem('bouclier_factures', JSON.stringify(factures)); }
+async function saveFactures() {
+  // Sauvegarde en base Supabase — plus de localStorage
+}
 
 function renderAll() {
   renderOverview();
@@ -656,15 +729,16 @@ function closeModal(id) { document.getElementById(id).classList.remove('open'); 
 
 let nextId = factures.length > 0 ? Math.max(...factures.map(f=>f.id)) + 1 : 1;
 
-function createFacture() {
+async function createFacture() {
   const client = document.getElementById('f-client').value.trim();
   const montant = document.getElementById('f-montant').value;
   const echeance = document.getElementById('f-echeance').value;
   const desc = document.getElementById('f-desc').value.trim();
   const statut = document.getElementById('f-statut').value;
   if (!client || !montant) { showToast('⚠️ Remplissez le client et le montant.'); return; }
-  factures.push({ id: nextId++, client, montant: Number(montant), echeance, desc, statut, createdAt: new Date().toISOString() });
-  saveFactures();
+  const data = await insertFacture({ client, montant: Number(montant), echeance, desc, statut });
+  if (!data) { showToast('❌ Erreur lors de la création.'); return; }
+  factures.unshift({ id: data.id, client, montant: Number(montant), echeance, desc, statut, createdAt: data.created_at });
   closeModal('modal-facture');
   document.getElementById('f-client').value = '';
   document.getElementById('f-montant').value = '';
@@ -674,10 +748,10 @@ function createFacture() {
   showToast('✅ Facture créée avec succès !');
 }
 
-function deleteFacture(id) {
+async function deleteFacture(id) {
   if (!confirm('Supprimer cette facture ?')) return;
+  await deleteFactureDB(id);
   factures = factures.filter(f => f.id !== id);
-  saveFactures();
   renderAll();
   showToast('🗑 Facture supprimée.');
 }
@@ -687,7 +761,12 @@ async function saveProfil() {
   const prenom = document.getElementById('profil-prenom').value;
   const nom = document.getElementById('profil-nom').value;
   const full_name = (prenom + ' ' + nom).trim();
+  const siret = document.getElementById('profil-siret').value;
+  const raison = document.getElementById('profil-raison').value;
+  const tel = document.getElementById('profil-tel').value;
+  const tva = document.getElementById('profil-tva').value;
   await sb.auth.updateUser({ data: { full_name } });
+  await saveProfile({ full_name, siret, raison_sociale: raison, tel, tva });
   if (full_name) {
     const initials = full_name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
     document.getElementById('user-avatar').textContent = initials;
@@ -871,15 +950,16 @@ function analyseFile(file) {
   reader.readAsArrayBuffer(file);
 }
 
-function importFacture() {
+async function importFacture() {
   var client  = document.getElementById('imp-client').value.trim();
   var montant = document.getElementById('imp-montant').value;
   var echeance= document.getElementById('imp-echeance').value;
   var desc    = document.getElementById('imp-desc').value.trim();
   var statut  = document.getElementById('imp-statut').value;
   if (!client || !montant) { showToast('⚠️ Client et montant requis.'); return; }
-  factures.push({ id: nextId++, client, montant: Number(montant), echeance, desc, statut, createdAt: new Date().toISOString(), imported: true });
-  saveFactures();
+  var data = await insertFacture({ client, montant: Number(montant), echeance, desc, statut, imported: true });
+  if (!data) { showToast('❌ Erreur lors de l\'import.'); return; }
+  factures.unshift({ id: data.id, client, montant: Number(montant), echeance, desc, statut, createdAt: data.created_at, imported: true });
   closeModal('modal-import');
   resetImport();
   renderAll();
