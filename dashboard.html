@@ -936,10 +936,10 @@ function showScoring(data) {
 </script>
 
 
+<script>
 // ── MODE B2B / B2C ──
 function applyMode(mode) {
   var isB2C = mode === 'b2c';
-  // Badge mode en haut
   var badge = document.getElementById('mode-badge');
   if (badge) {
     badge.textContent = isB2C ? '👤 Mode Particulier (B2C)' : '🏢 Mode Pro (B2B)';
@@ -947,21 +947,20 @@ function applyMode(mode) {
     badge.style.color = isB2C ? '#93c5fd' : '#34d399';
     badge.style.borderColor = isB2C ? 'rgba(96,165,250,.2)' : 'rgba(16,185,129,.2)';
   }
-  // Adapter les labels de relances
   var relanceTitle = document.getElementById('relance-mode-label');
   if (relanceTitle) {
     relanceTitle.textContent = isB2C
       ? 'Relances IA — ton humain et bienveillant, conforme droit de la consommation'
       : 'Relances IA — ton corporate, loi LME, pénalités de retard automatiques';
   }
-  // Adapter scoring label
   var scoringLabel = document.getElementById('scoring-mode-label');
   if (scoringLabel) {
-    scoringLabel.textContent = isBzC
+    scoringLabel.textContent = isB2C
       ? 'Analyse comportementale (B2C)'
       : 'Scoring financier entreprise — INSEE · Infogreffe · Pappers · BODACC';
   }
 }
+</script>
 
 </body>
 </html>
