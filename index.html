@@ -580,7 +580,7 @@ footer {
   </div>
   <div class="nav-right">
     <button class="btn-ghost-sm">Se connecter</button>
-    <button class="btn-sm">Essai gratuit</button>
+    <button class="btn-sm" onclick="openSignup()">Essai gratuit</button>
   </div>
 </nav>
 
@@ -593,7 +593,7 @@ footer {
   <h1>Vos factures seront<br><em>toujours</em> payées.</h1>
   <p class="hero-sub">Bouclier est le SaaS de facturation qui intègre IA de recouvrement, scoring financier client et procédures légales automatisées. Conçu pour les freelances et indépendants français.</p>
   <div class="hero-actions">
-    <button class="btn-primary">Commencer gratuitement →</button>
+    <button class="btn-primary" onclick="openSignup()">Commencer gratuitement →</button>
     <button class="btn-outline">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
       Voir la démo
@@ -878,7 +878,7 @@ footer {
           <li><span class="feat-cross"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Procédure légale incluse</li>
           <li><span class="feat-cross"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Assurance impayés</li>
         </ul>
-        <button class="plan-cta cta-outlined">Commencer</button>
+        <button class="plan-cta cta-outlined" onclick="openSignup()">Commencer</button>
       </div>
       <!-- BOUCLIER PRO -->
       <div class="plan-card featured">
@@ -896,7 +896,7 @@ footer {
           <li><span class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>Assurance impayés jusqu'à 5 000€</li>
           <li><span class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>Support prioritaire 7j/7</li>
         </ul>
-        <button class="plan-cta cta-filled">Essai 30j gratuit</button>
+        <button class="plan-cta cta-filled" onclick="openSignup()">Essai 30j gratuit</button>
       </div>
       <!-- STUDIO -->
       <div class="plan-card">
@@ -996,7 +996,7 @@ footer {
   <p>Rejoignez les 200 freelances qui ont déjà arrêté de stresser pour leurs factures. 30 jours gratuits, sans engagement.</p>
   <div class="email-form">
     <input type="email" class="email-input" placeholder="votre@email.fr">
-    <button class="btn-primary">Démarrer →</button>
+    <button class="btn-primary" onclick="submitSignup()">Démarrer →</button>
   </div>
   <div class="fine-print">Aucune carte requise · Résiliation en 1 clic · Support en français</div>
 </section>
@@ -1017,6 +1017,95 @@ footer {
   </div>
   <div class="footer-legal">© 2026 Bouclier SAS · Paris, France · SIRET 123 456 789 00012</div>
 </footer>
+
+
+<!-- ── SIGNUP MODAL ── -->
+<div id="signup-overlay" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(6,8,11,.85);backdrop-filter:blur(12px);align-items:center;justify-content:center;">
+  <div id="signup-modal" style="background:#0d1117;border:1px solid rgba(255,255,255,0.12);border-radius:16px;width:100%;max-width:420px;padding:2.5rem;position:relative;box-shadow:0 40px 80px rgba(0,0,0,.7);animation:modalIn .25s ease both;">
+    <button onclick="closeSignup()" style="position:absolute;top:1.25rem;right:1.25rem;background:none;border:none;color:#6b7a8d;cursor:pointer;font-size:1.2rem;line-height:1;">✕</button>
+
+    <!-- Step 1: email -->
+    <div id="step-1">
+      <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#10b981,#047857);display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:1.5rem;">🛡</div>
+      <h3 style="font-family:'Instrument Serif',serif;font-size:1.75rem;color:#e8edf2;letter-spacing:-0.02em;margin-bottom:.4rem;">Créer votre compte</h3>
+      <p style="font-size:.8rem;color:#6b7a8d;margin-bottom:1.75rem;line-height:1.6;">30 jours gratuits · Sans carte bancaire · Résiliation en 1 clic</p>
+      <div style="margin-bottom:1rem;">
+        <label style="font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:#6b7a8d;display:block;margin-bottom:.4rem;">Prénom & Nom</label>
+        <input id="input-name" type="text" placeholder="Sophie Martin" style="width:100%;background:#131920;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:.7rem 1rem;color:#e8edf2;font-family:inherit;font-size:.85rem;outline:none;transition:border-color .15s;" onfocus="this.style.borderColor='#10b981'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'">
+      </div>
+      <div style="margin-bottom:1rem;">
+        <label style="font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:#6b7a8d;display:block;margin-bottom:.4rem;">Email professionnel</label>
+        <input id="input-email" type="email" placeholder="vous@email.fr" style="width:100%;background:#131920;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:.7rem 1rem;color:#e8edf2;font-family:inherit;font-size:.85rem;outline:none;transition:border-color .15s;" onfocus="this.style.borderColor='#10b981'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'">
+      </div>
+      <div style="margin-bottom:1.5rem;">
+        <label style="font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:#6b7a8d;display:block;margin-bottom:.4rem;">Mot de passe</label>
+        <input id="input-pwd" type="password" placeholder="••••••••••" style="width:100%;background:#131920;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:.7rem 1rem;color:#e8edf2;font-family:inherit;font-size:.85rem;outline:none;transition:border-color .15s;" onfocus="this.style.borderColor='#10b981'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'">
+      </div>
+      <button onclick="goToDashboard()" style="width:100%;background:#10b981;color:#fff;border:none;font-family:inherit;font-size:.9rem;font-weight:500;padding:.8rem;border-radius:8px;cursor:pointer;transition:background .2s;letter-spacing:.01em;" onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10b981'">
+        Créer mon compte →
+      </button>
+      <p style="font-size:.65rem;color:#5a6a7e;text-align:center;margin-top:1rem;line-height:1.6;">En créant un compte vous acceptez nos <span style="color:#8f9fb3;cursor:pointer;text-decoration:underline">CGU</span> et notre <span style="color:#8f9fb3;cursor:pointer;text-decoration:underline">politique de confidentialité</span>.</p>
+    </div>
+
+    <!-- Step 2: loading -->
+    <div id="step-2" style="display:none;text-align:center;padding:1rem 0;">
+      <div style="width:48px;height:48px;border-radius:50%;border:2px solid rgba(16,185,129,.2);border-top-color:#10b981;animation:spin .7s linear infinite;margin:0 auto 1.5rem;"></div>
+      <div style="font-size:.9rem;color:#e8edf2;font-weight:500;margin-bottom:.4rem;">Création de votre espace…</div>
+      <div style="font-size:.75rem;color:#6b7a8d;" id="loading-text">Initialisation du compte</div>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes modalIn{from{opacity:0;transform:scale(.96) translateY(8px)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+#signup-overlay.open{display:flex;}
+</style>
+
+<script>
+function openSignup(){
+  const overlay = document.getElementById('signup-overlay');
+  overlay.classList.add('open');
+  overlay.style.display = 'flex';
+  document.getElementById('step-1').style.display = 'block';
+  document.getElementById('step-2').style.display = 'none';
+}
+function closeSignup(){
+  const overlay = document.getElementById('signup-overlay');
+  overlay.style.display = 'none';
+  overlay.classList.remove('open');
+}
+function submitSignup(){
+  const email = document.querySelector('.email-input');
+  if(email && email.value) {
+    document.getElementById('input-email').value = email.value;
+  }
+  openSignup();
+}
+function goToDashboard(){
+  const name = document.getElementById('input-name').value;
+  const email = document.getElementById('input-email').value;
+  if(!name || !email){
+    document.getElementById('input-name').style.borderColor = !name ? '#f87171' : 'rgba(255,255,255,0.08)';
+    document.getElementById('input-email').style.borderColor = !email ? '#f87171' : 'rgba(255,255,255,0.08)';
+    return;
+  }
+  document.getElementById('step-1').style.display = 'none';
+  document.getElementById('step-2').style.display = 'block';
+  const msgs = ['Initialisation du compte','Analyse de votre profil','Configuration de l'IA Bouclier','Prêt ! Redirection…'];
+  let i = 0;
+  const el = document.getElementById('loading-text');
+  const iv = setInterval(() => {
+    el.textContent = msgs[Math.min(i, msgs.length-1)];
+    i++;
+    if(i >= msgs.length) { clearInterval(iv); setTimeout(() => { window.location.href = 'dashboard.html'; }, 500); }
+  }, 600);
+}
+// Close on overlay click
+document.getElementById('signup-overlay').addEventListener('click', function(e){
+  if(e.target === this) closeSignup();
+});
+</script>
 
 </body>
 </html>
