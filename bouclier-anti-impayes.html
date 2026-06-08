@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bouclier — Zéro Impayé. Garanti.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e0c0a;
+    --cream: #f5f0e8;
+    --amber: #d4820a;
+    --amber-light: #f0a830;
+    --red: #c53030;
+    --green: #1a7a4a;
+    --green-light: #22c55e;
+    --muted: #8a8275;
+    --border: #d9d2c5;
+    --card: #faf7f2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Mono', monospace;
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 3rem;
+    background: rgba(245,240,232,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem; font-weight: 900;
+    letter-spacing: -0.03em;
+  }
+  .logo span { color: var(--amber); }
+  .nav-links { display: flex; gap: 2rem; align-items: center; }
+  .nav-links a {
+    text-decoration: none; color: var(--muted);
+    font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .btn-nav {
+    background: var(--ink); color: var(--cream);
+    padding: .5rem 1.25rem; border-radius: 2px;
+    font-family: 'DM Mono', monospace; font-size: 0.75rem;
+    letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer;
+    border: none; transition: background .2s;
+  }
+  .btn-nav:hover { background: var(--amber); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    padding-top: 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 50%; height: 100%;
+    background: var(--ink);
+    z-index: 0;
+  }
+  .hero-left {
+    padding: 6rem 3rem 4rem 3rem;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; z-index: 1;
+  }
+  .hero-right {
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    padding: 4rem 3rem;
+    position: relative; z-index: 1;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: .5rem;
+    font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--amber); border: 1px solid var(--amber);
+    padding: .35rem .75rem; border-radius: 2px;
+    margin-bottom: 2rem;
+    width: fit-content;
+  }
+  .badge::before { content: '●'; font-size: 0.5rem; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(3rem, 5vw, 5rem);
+    font-weight: 900; line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin-bottom: 1.5rem;
+  }
+  h1 em { font-style: italic; color: var(--amber); }
+  .hero-sub {
+    font-size: 0.85rem; line-height: 1.8;
+    color: #5a5347; max-width: 420px;
+    margin-bottom: 2.5rem;
+  }
+  .cta-row { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--amber); color: var(--ink);
+    padding: .9rem 2rem; border-radius: 2px;
+    font-family: 'DM Mono', monospace; font-size: 0.8rem;
+    font-weight: 500; letter-spacing: 0.05em;
+    cursor: pointer; border: none;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212,130,10,.35); }
+  .btn-ghost {
+    color: var(--muted); font-size: 0.75rem;
+    text-decoration: none; letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2px; transition: color .2s;
+  }
+  .btn-ghost:hover { color: var(--ink); }
+
+  /* ── DASHBOARD MOCKUP ── */
+  .dash-card {
+    background: #1a1714;
+    border-radius: 8px;
+    width: 100%; max-width: 420px;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,.6);
+    transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);
+    transition: transform .4s;
+  }
+  .dash-card:hover { transform: perspective(1000px) rotateY(0deg) rotateX(0deg); }
+  .dash-header {
+    background: #111;
+    padding: .75rem 1rem;
+    display: flex; align-items: center; gap: .5rem;
+    border-bottom: 1px solid #2a2725;
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #febc2e; }
+  .dot-g { background: #28c840; }
+  .dash-title { font-size: 0.65rem; color: #666; margin-left: .5rem; letter-spacing: 0.08em; }
+  .dash-body { padding: 1.25rem; }
+
+  .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-bottom: 1rem; }
+  .stat-box {
+    background: #22201d;
+    border-radius: 6px; padding: .85rem;
+    border: 1px solid #2e2b27;
+  }
+  .stat-label { font-size: 0.6rem; color: #666; text-transform: uppercase; letter-spacing: 0.1em; }
+  .stat-val { font-family: 'Fraunces', serif; font-size: 1.6rem; color: #f5f0e8; margin-top: .15rem; }
+  .stat-val.green { color: var(--green-light); }
+  .stat-val.amber { color: var(--amber-light); }
+  .stat-delta { font-size: 0.6rem; color: var(--green-light); margin-top: .2rem; }
+
+  .invoice-list { display: flex; flex-direction: column; gap: .5rem; }
+  .invoice-item {
+    background: #22201d;
+    border-radius: 6px; padding: .65rem .85rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border: 1px solid #2e2b27;
+  }
+  .invoice-info { display: flex; flex-direction: column; }
+  .invoice-client { font-size: 0.7rem; color: #ccc; }
+  .invoice-date { font-size: 0.58rem; color: #555; margin-top: 2px; }
+  .invoice-amount { font-family: 'Fraunces', serif; font-size: 0.95rem; color: #f5f0e8; }
+  .status-badge {
+    font-size: 0.55rem; padding: .2rem .5rem; border-radius: 2px;
+    text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500;
+  }
+  .status-paid { background: rgba(34,197,94,.15); color: var(--green-light); border: 1px solid rgba(34,197,94,.2); }
+  .status-relance { background: rgba(240,168,48,.15); color: var(--amber-light); border: 1px solid rgba(240,168,48,.2); }
+  .status-legal { background: rgba(197,48,48,.15); color: #fc8181; border: 1px solid rgba(197,48,48,.2); }
+
+  .ai-bar {
+    margin-top: .75rem;
+    background: #22201d;
+    border-radius: 6px; padding: .7rem .85rem;
+    border: 1px solid #2e2b27;
+    display: flex; align-items: center; gap: .6rem;
+  }
+  .ai-icon { font-size: 1rem; }
+  .ai-text { font-size: 0.62rem; color: #888; line-height: 1.5; }
+  .ai-text strong { color: var(--amber-light); }
+  .typing::after { content: '▊'; animation: blink .8s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* ── STATS BAND ── */
+  .stats-band {
+    background: var(--ink); color: var(--cream);
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    padding: 3.5rem 3rem;
+    gap: 2rem;
+  }
+  .stat-item { text-align: center; }
+  .stat-number {
+    font-family: 'Fraunces', serif;
+    font-size: 3.5rem; font-weight: 900;
+    color: var(--amber);
+    line-height: 1;
+  }
+  .stat-desc { font-size: 0.7rem; color: #888; margin-top: .5rem; line-height: 1.5; }
+
+  /* ── HOW IT WORKS ── */
+  .section { padding: 6rem 3rem; }
+  .section-label {
+    font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em;
+    color: var(--amber); margin-bottom: 1rem;
+  }
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 900; line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+
+  .steps-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px; margin-top: 3.5rem;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .step {
+    background: var(--card);
+    padding: 2.5rem 2rem;
+    position: relative;
+  }
+  .step-num {
+    font-family: 'Fraunces', serif;
+    font-size: 4rem; font-weight: 900;
+    color: var(--border);
+    line-height: 1; margin-bottom: .5rem;
+    position: absolute; top: 1.5rem; right: 1.5rem;
+  }
+  .step-icon { font-size: 1.75rem; margin-bottom: 1rem; }
+  .step h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.25rem; font-weight: 700;
+    margin-bottom: .75rem;
+  }
+  .step p { font-size: 0.78rem; color: var(--muted); line-height: 1.75; }
+  .step.highlight { background: var(--ink); color: var(--cream); }
+  .step.highlight .step-num { color: #2a2725; }
+  .step.highlight p { color: #888; }
+
+  /* ── AI SECTION ── */
+  .ai-section {
+    background: #0e0c0a;
+    padding: 6rem 3rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
+    align-items: center;
+  }
+  .ai-section h2 { color: var(--cream); }
+  .ai-section .section-label { color: var(--amber); }
+  .ai-section p { color: #888; font-size: 0.82rem; line-height: 1.8; margin-top: 1.25rem; }
+
+  .relance-demo {
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  .msg-bubble {
+    background: #1a1714;
+    border: 1px solid #2e2b27;
+    border-radius: 8px; padding: 1rem 1.25rem;
+    position: relative;
+    animation: slideIn .4s ease both;
+  }
+  @keyframes slideIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
+  .msg-bubble:nth-child(2) { animation-delay: .15s; }
+  .msg-bubble:nth-child(3) { animation-delay: .3s; }
+  .msg-meta { font-size: 0.6rem; color: #555; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: .5rem; display: flex; justify-content: space-between; }
+  .msg-meta .day { color: var(--amber); }
+  .msg-content { font-size: 0.75rem; color: #bbb; line-height: 1.65; }
+  .msg-tag {
+    display: inline-block; font-size: 0.55rem; padding: .2rem .5rem;
+    border-radius: 2px; margin-top: .6rem;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .tag-ai { background: rgba(212,130,10,.15); color: var(--amber-light); border: 1px solid rgba(212,130,10,.2); }
+  .tag-legal { background: rgba(197,48,48,.15); color: #fc8181; border: 1px solid rgba(197,48,48,.2); }
+
+  /* ── PRICING ── */
+  .pricing { padding: 6rem 3rem; background: var(--cream); }
+  .pricing-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px; margin-top: 3.5rem;
+    background: var(--border);
+    border: 1px solid var(--border);
+    max-width: 900px; margin-left: auto; margin-right: auto;
+  }
+  .plan {
+    background: var(--card); padding: 2.5rem 2rem;
+  }
+  .plan.featured {
+    background: var(--ink); color: var(--cream);
+    position: relative;
+  }
+  .plan-tag {
+    font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--amber); margin-bottom: 1rem;
+  }
+  .plan-name {
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem; font-weight: 700;
+    margin-bottom: .25rem;
+  }
+  .plan-price {
+    font-family: 'Fraunces', serif;
+    font-size: 3rem; font-weight: 900; line-height: 1;
+    margin: 1rem 0 .25rem;
+  }
+  .plan-price span { font-size: 1rem; font-weight: 400; }
+  .plan-desc { font-size: 0.72rem; color: var(--muted); margin-bottom: 1.5rem; }
+  .plan.featured .plan-desc { color: #888; }
+  .plan-features { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+  .plan-features li {
+    font-size: 0.73rem; display: flex; gap: .6rem; align-items: flex-start;
+    color: var(--muted); line-height: 1.4;
+  }
+  .plan.featured .plan-features li { color: #aaa; }
+  .plan-features li::before { content: '→'; color: var(--amber); flex-shrink: 0; }
+  .plan-btn {
+    width: 100%; margin-top: 2rem;
+    padding: .85rem; border-radius: 2px;
+    font-family: 'DM Mono', monospace; font-size: 0.75rem;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    cursor: pointer; border: 1px solid var(--border);
+    background: transparent; transition: all .2s;
+  }
+  .plan-btn:hover { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+  .plan.featured .plan-btn {
+    background: var(--amber); color: var(--ink); border-color: var(--amber);
+  }
+  .plan.featured .plan-btn:hover { background: var(--amber-light); }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials { padding: 5rem 3rem; background: var(--ink); }
+  .testimonials h2 { color: var(--cream); margin-bottom: 3rem; }
+  .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .testi {
+    background: #1a1714; border: 1px solid #2a2725;
+    border-radius: 4px; padding: 1.5rem;
+  }
+  .testi-quote { font-size: 0.8rem; color: #bbb; line-height: 1.75; margin-bottom: 1rem; font-style: italic; }
+  .testi-author { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .testi-saved { font-family: 'Fraunces', serif; font-size: 1.25rem; color: var(--green-light); margin-top: .25rem; }
+
+  /* ── CTA FOOTER ── */
+  .cta-footer {
+    padding: 7rem 3rem;
+    text-align: center;
+    background: var(--cream);
+    border-top: 1px solid var(--border);
+  }
+  .cta-footer h2 { font-size: clamp(2.5rem, 5vw, 5rem); margin-bottom: 1.5rem; }
+  .cta-footer p { font-size: 0.82rem; color: var(--muted); max-width: 500px; margin: 0 auto 2.5rem; line-height: 1.8; }
+  .input-row { display: flex; gap: .75rem; max-width: 440px; margin: 0 auto; }
+  .email-input {
+    flex: 1; padding: .85rem 1rem;
+    border: 1px solid var(--border); border-radius: 2px;
+    font-family: 'DM Mono', monospace; font-size: 0.8rem;
+    background: white; color: var(--ink);
+    outline: none; transition: border-color .2s;
+  }
+  .email-input:focus { border-color: var(--amber); }
+  .fine-print { font-size: 0.65rem; color: var(--muted); margin-top: 1rem; text-align: center; }
+
+  footer {
+    background: var(--ink); color: #555;
+    padding: 2rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.65rem; letter-spacing: 0.05em;
+  }
+  footer a { color: #555; text-decoration: none; }
+  footer a:hover { color: var(--amber); }
+
+  /* ── LEGAL INDICATOR ── */
+  .legal-indicator {
+    display: flex; align-items: center; gap: .5rem;
+    margin-top: 2rem; font-size: 0.65rem; color: var(--muted);
+    padding: .75rem 1rem;
+    border: 1px solid var(--border); border-radius: 2px;
+    background: white;
+    width: fit-content;
+  }
+  .legal-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green-light); animation: pulse 2s infinite; }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero::before { display: none; }
+    .hero-right { background: var(--ink); padding: 3rem 2rem; }
+    .stats-band { grid-template-columns: repeat(2, 1fr); }
+    .steps-grid, .pricing-grid, .testi-grid { grid-template-columns: 1fr; }
+    .ai-section { grid-template-columns: 1fr; }
+    nav { padding: 1rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Boucli<span>er</span></div>
+  <div class="nav-links">
+    <a href="#">Comment ça marche</a>
+    <a href="#">Tarifs</a>
+    <a href="#">Partenaires</a>
+    <button class="btn-nav">Accès Bêta</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="badge">Bêta ouverte — 200 freelances</div>
+    <h1>Zéro<br><em>impayé.</em><br>Garanti.</h1>
+    <p class="hero-sub">Le SaaS de facturation avec IA de recouvrement intégrée. Émettez votre facture — Bouclier s'occupe du reste, jusqu'à la mise en demeure légale automatique.</p>
+    <div class="cta-row">
+      <button class="btn-primary">Essayer 30 jours gratuits</button>
+      <a href="#" class="btn-ghost">Voir la démo →</a>
+    </div>
+    <div class="legal-indicator">
+      <div class="legal-dot"></div>
+      Partenaire officiel huissier de justice — procédures 100% conformes
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="dash-card">
+      <div class="dash-header">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+        <span class="dash-title">bouclier.app — Tableau de bord</span>
+      </div>
+      <div class="dash-body">
+        <div class="stat-row">
+          <div class="stat-box">
+            <div class="stat-label">Encaissé (90j)</div>
+            <div class="stat-val green">38 200€</div>
+            <div class="stat-delta">↑ +12% vs trimestre préc.</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">En attente</div>
+            <div class="stat-val amber">4 800€</div>
+            <div class="stat-delta">2 relances actives</div>
+          </div>
+        </div>
+        <div class="invoice-list">
+          <div class="invoice-item">
+            <div class="invoice-info">
+              <span class="invoice-client">AGENCE NOVA PARIS</span>
+              <span class="invoice-date">Échéance 01/06 · FA-2025-041</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.35rem">
+              <span class="invoice-amount">3 200€</span>
+              <span class="status-badge status-paid">Payée ✓</span>
+            </div>
+          </div>
+          <div class="invoice-item">
+            <div class="invoice-info">
+              <span class="invoice-client">STARTUP BLOOM</span>
+              <span class="invoice-date">En retard de 8j · FA-2025-042</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.35rem">
+              <span class="invoice-amount">1 800€</span>
+              <span class="status-badge status-relance">IA relance J+8</span>
+            </div>
+          </div>
+          <div class="invoice-item">
+            <div class="invoice-info">
+              <span class="invoice-client">MEDIA GROUP SAS</span>
+              <span class="invoice-date">En retard de 32j · FA-2025-038</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.35rem">
+              <span class="invoice-amount">3 000€</span>
+              <span class="status-badge status-legal">Huissier activé</span>
+            </div>
+          </div>
+        </div>
+        <div class="ai-bar">
+          <span class="ai-icon">🛡</span>
+          <div class="ai-text">
+            <strong>IA Bouclier</strong> — Startup Bloom : score financier <strong style="color:#22c55e">B+</strong>. Relance courtoise envoyée. Probabilité de paiement sous 72h : <strong style="color:#f0a830">87%</strong><span class="typing"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAND -->
+<div class="stats-band">
+  <div class="stat-item">
+    <div class="stat-number">1,2M</div>
+    <div class="stat-desc">freelances en France exposés<br>aux retards de paiement</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">67j</div>
+    <div class="stat-desc">délai moyen de paiement<br>pour les indépendants B2B</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">94%</div>
+    <div class="stat-desc">des factures recouvrées<br>avant procédure légale</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">48h</div>
+    <div class="stat-desc">pour activer une procédure<br>huissier partenaire</div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+  <div class="section-label">Le processus</div>
+  <h2>Vous facturez.<br>On recouvre.</h2>
+  <div class="steps-grid">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-icon">📄</div>
+      <h3>Émettez votre facture</h3>
+      <p>Créez et envoyez vos factures directement depuis Bouclier. L'IA analyse instantanément la santé financière de votre client via les données INSEE, Infogreffe et Banque de France.</p>
+    </div>
+    <div class="step highlight">
+      <div class="step-num">02</div>
+      <div class="step-icon">🤖</div>
+      <h3>L'IA prend le relais</h3>
+      <p>En cas de retard, notre IA envoie des relances adaptées au ton et au profil de l'entreprise — ni agressives, ni naïves. Psychologie comportementale + légitimité légale = taux de paiement record.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-icon">⚖️</div>
+      <h3>Procédure légale en 1 clic</h3>
+      <p>Si le blocage persiste, activez en un clic la procédure amiable légale avec notre réseau d'huissiers partenaires. Dossier constitué automatiquement. Zéro papier, zéro stress.</p>
+    </div>
+  </div>
+</section>
+
+<!-- AI RELANCES -->
+<section class="ai-section">
+  <div>
+    <div class="section-label">Intelligence artificielle</div>
+    <h2 style="color:var(--cream)">La relance qui<br><em style="color:var(--amber)">ne froisse pas.</em></h2>
+    <p>Notre IA analyse le contexte, le ton habituel de votre client et sa situation financière pour calibrer chaque relance. Ferme sur le fond, irréprochable sur la forme.</p>
+    <p>Le résultat : vos clients payent sans que votre relation commerciale en souffre.</p>
+  </div>
+  <div class="relance-demo">
+    <div class="msg-bubble">
+      <div class="msg-meta">
+        <span>Email automatique</span>
+        <span class="day">J+3 · Rappel doux</span>
+      </div>
+      <div class="msg-content">Bonjour Marie, j'espère que la prestation de design vous a pleinement satisfaite. Je me permets de vous rappeler que la facture FA-042 arrive à échéance dans 3 jours. N'hésitez pas si une question se pose !</div>
+      <span class="msg-tag tag-ai">✦ Généré par IA Bouclier</span>
+    </div>
+    <div class="msg-bubble">
+      <div class="msg-meta">
+        <span>Email automatique</span>
+        <span class="day">J+10 · Ferme & courtois</span>
+      </div>
+      <div class="msg-content">Bonjour Marie, la facture FA-042 de 1 800€ est désormais en retard de 7 jours. Conformément à nos conditions générales, des pénalités de retard commencent à courir. Merci de régulariser sous 5 jours ouvrés.</div>
+      <span class="msg-tag tag-ai">✦ Généré par IA Bouclier</span>
+    </div>
+    <div class="msg-bubble">
+      <div class="msg-meta">
+        <span>Procédure automatique</span>
+        <span class="day">J+30 · Mise en demeure</span>
+      </div>
+      <div class="msg-content">Mise en demeure générée automatiquement. Transmise à Maître Dupont, huissier partenaire. Dossier complet constitué. Procédure injonction de payer initiée.</div>
+      <span class="msg-tag tag-legal">⚖ Procédure légale active</span>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing">
+  <div class="section-label">Tarifs</div>
+  <h2>Simple comme une<br>facture payée.</h2>
+  <div class="pricing-grid">
+    <div class="plan">
+      <div class="plan-tag">Starter</div>
+      <div class="plan-name">Solo</div>
+      <div class="plan-price">29€<span>/mois</span></div>
+      <div class="plan-desc">Pour les freelances qui démarrent</div>
+      <ul class="plan-features">
+        <li>Facturation illimitée</li>
+        <li>Analyse crédit client (INSEE/Greffe)</li>
+        <li>3 relances IA automatiques</li>
+        <li>Tableau de bord cashflow</li>
+        <li>Export comptable</li>
+      </ul>
+      <button class="plan-btn">Commencer</button>
+    </div>
+    <div class="plan featured">
+      <div class="plan-tag">★ Le plus populaire</div>
+      <div class="plan-name">Bouclier</div>
+      <div class="plan-price">59€<span>/mois</span></div>
+      <div class="plan-desc">La tranquillité d'esprit complète</div>
+      <ul class="plan-features">
+        <li>Tout Solo, plus :</li>
+        <li>Relances IA illimitées & adaptatives</li>
+        <li>Scoring psychologique client</li>
+        <li>Procédure amiable légale incluse</li>
+        <li>Huissier partenaire dédié</li>
+        <li>Assurance impayés jusqu'à 5 000€</li>
+      </ul>
+      <button class="plan-btn">Essai 30j gratuit</button>
+    </div>
+    <div class="plan">
+      <div class="plan-tag">Entreprise</div>
+      <div class="plan-name">Studio</div>
+      <div class="plan-price">Sur<span> devis</span></div>
+      <div class="plan-desc">Pour les agences et collectifs</div>
+      <ul class="plan-features">
+        <li>Multi-utilisateurs</li>
+        <li>Assurance impayés sur mesure</li>
+        <li>API & intégrations (Notion, Pennylane)</li>
+        <li>CSM dédié</li>
+        <li>SLA contractualisé</li>
+      </ul>
+      <button class="plan-btn">Nous contacter</button>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="section-label" style="color:var(--amber)">Ils ont été payés</div>
+  <h2>Ce que disent<br>nos freelances.</h2>
+  <div class="testi-grid">
+    <div class="testi">
+      <div class="testi-quote">"Un client me devait 8 000€ depuis 3 mois. J'osais pas relancer de peur de perdre le contrat futur. Bouclier a géré ça avec une telle élégance que le client a payé ET m'a rappelé pour une nouvelle mission."</div>
+      <div class="testi-author">Sophie M. — Consultante UX, Paris</div>
+      <div class="testi-saved">8 000€ récupérés</div>
+    </div>
+    <div class="testi">
+      <div class="testi-quote">"La mise en demeure automatique, c'est magique. J'ai cliqué un bouton un vendredi soir. Le lundi matin j'avais un virement. Mon huissier habituel m'aurait pris 3 semaines et 400€."</div>
+      <div class="testi-author">Thomas L. — Développeur freelance, Lyon</div>
+      <div class="testi-saved">3 200€ récupérés en 48h</div>
+    </div>
+    <div class="testi">
+      <div class="testi-quote">"Le scoring financier avant d'accepter un client, c'est ce qui m'a le plus surprise. Bouclier m'a signalé qu'une startup avait des signaux faibles. J'ai demandé un acompte. 2 mois plus tard, ils ont fait faillite."</div>
+      <div class="testi-author">Amira B. — Copywriter, Bordeaux</div>
+      <div class="testi-saved">Risque évité : 4 500€</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FOOTER -->
+<section class="cta-footer">
+  <div class="section-label">Accès bêta fermée</div>
+  <h2>Votre facture<br>sera <em style="font-family:'Fraunces',serif;color:var(--amber)">payée.</em></h2>
+  <p>Rejoignez 200 freelances bêta-testeurs et ne perdez plus jamais une nuit à stresser pour une facture en retard.</p>
+  <div class="input-row">
+    <input type="email" class="email-input" placeholder="votre@email.fr">
+    <button class="btn-primary">Rejoindre la bêta</button>
+  </div>
+  <div class="fine-print">Aucune carte requise · 30 jours gratuits · Résiliation en 1 clic</div>
+</section>
+
+<footer>
+  <div>© 2025 Bouclier SAS — Paris, France</div>
+  <div style="display:flex;gap:2rem">
+    <a href="#">CGU</a>
+    <a href="#">Confidentialité</a>
+    <a href="#">Mentions légales</a>
+    <a href="#">Partenaires huissiers</a>
+  </div>
+</footer>
+
+</body>
+</html>
