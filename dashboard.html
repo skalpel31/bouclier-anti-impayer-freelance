@@ -233,7 +233,7 @@ body{font-family:'Geist',system-ui,sans-serif;background:var(--night);color:var(
       <div class="sb-avatar" id="user-avatar">--</div>
       <div class="sb-uinfo">
         <div class="sb-uname" id="user-name">Chargement…</div>
-        <div class="sb-uplan">Plan Bouclier Pro</div>
+        <div class="sb-uplan">Bouclier — 9€/mois</div>
       </div>
     </div>
     <button class="btn-logout" onclick="logout()">
@@ -391,8 +391,8 @@ body{font-family:'Geist',system-ui,sans-serif;background:var(--night);color:var(
             <div class="card-body">
               <div style="background:var(--emerald-dim);border:1px solid rgba(16,185,129,.2);border-radius:var(--r2);padding:1rem;margin-bottom:1rem;">
                 <div style="font-size:.65rem;color:var(--emerald);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.25rem;">Plan actif</div>
-                <div style="font-size:1.1rem;font-weight:700;color:var(--text);">Bouclier Pro</div>
-                <div style="font-size:.72rem;color:var(--muted);margin-top:.25rem;">59€/mois · Essai gratuit en cours</div>
+                <div style="font-size:1.1rem;font-weight:700;color:var(--text);">Bouclier</div>
+                <div style="font-size:.72rem;color:var(--muted);margin-top:.25rem;">9€/mois · 30 jours gratuits inclus</div>
               </div>
               <button class="btn-danger" onclick="openModal('modal-abo')">Gérer l'abonnement</button>
             </div>
@@ -811,15 +811,15 @@ document.getElementById('modal-facture').addEventListener('click', function(e) {
     <div style="display:flex;flex-direction:column;gap:.75rem;margin-bottom:1.25rem;">
       <div onclick="selectPlan('solo')" id="plan-card-solo" style="background:var(--raised);border:1px solid var(--border2);border-radius:var(--r2);padding:1rem;cursor:pointer;transition:border-color .15s;">
         <div style="display:flex;align-items:center;justify-content:space-between;">
-          <div><div style="font-size:.8rem;font-weight:600;color:var(--text);">Solo</div><div style="font-size:.7rem;color:var(--muted);margin-top:.2rem;">Facturation + scoring + 3 relances IA</div></div>
-          <div style="font-family:'Inter',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);">29€<span style="font-size:.7rem;font-weight:400;color:var(--muted);">/mois</span></div>
+          <div><div style="font-size:.8rem;font-weight:600;color:var(--text);">Accès Bouclier</div><div style="font-size:.7rem;color:var(--muted);margin-top:.2rem;">Tout inclus — facturation, IA, scoring, huissier</div></div>
+          <div style="font-family:'Inter',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);">9€<span style="font-size:.7rem;font-weight:400;color:var(--muted);">/mois</span></div>
         </div>
       </div>
       <div onclick="selectPlan('pro')" id="plan-card-pro" style="background:var(--emerald-dim);border:1px solid rgba(16,185,129,.35);border-radius:var(--r2);padding:1rem;cursor:pointer;transition:border-color .15s;position:relative;">
         <div style="position:absolute;top:-10px;right:1rem;background:var(--emerald);color:#fff;font-size:.58rem;font-weight:600;padding:.15rem .6rem;border-radius:999px;text-transform:uppercase;letter-spacing:.06em;">Recommandé</div>
         <div style="display:flex;align-items:center;justify-content:space-between;">
-          <div><div style="font-size:.8rem;font-weight:600;color:var(--text);">Bouclier Pro</div><div style="font-size:.7rem;color:var(--muted);margin-top:.2rem;">Tout Solo + relances illimitées + huissier + assurance</div></div>
-          <div style="font-family:'Inter',sans-serif;font-size:1.1rem;font-weight:700;color:var(--emerald);">59€<span style="font-size:.7rem;font-weight:400;color:var(--muted);">/mois</span></div>
+          <div><div style="font-size:.8rem;font-weight:600;color:var(--text);">Commission au succès</div><div style="font-size:.7rem;color:var(--muted);margin-top:.2rem;">2% relance IA · 5% procédure huissier</div></div>
+          <div style="font-family:'Inter',sans-serif;font-size:1.1rem;font-weight:700;color:var(--emerald);">Au succès</div>
         </div>
       </div>
     </div>
