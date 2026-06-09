@@ -309,8 +309,8 @@ body{font-family:'Geist',system-ui,sans-serif;background:var(--night);color:var(
     <!-- ── ABONNEMENTS ── -->
     <div class="tab-content" id="tab-abonnements">
       <div class="kpi-grid g3">
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Solo (29€/mois)</span><div class="kpi-icon ki-g">📦</div></div><div class="kpi-val" id="plan-solo">0</div><div class="kpi-delta" id="plan-solo-rev">0€/mois</div></div>
-        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Bouclier Pro (59€/mois)</span><div class="kpi-icon ki-p">🛡</div></div><div class="kpi-val purple" id="plan-pro">0</div><div class="kpi-delta" id="plan-pro-rev">0€/mois</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Accès (9€/mois)</span><div class="kpi-icon ki-g">📦</div></div><div class="kpi-val" id="plan-solo">0</div><div class="kpi-delta" id="plan-solo-rev">0€/mois</div></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Commission (au succès)</span><div class="kpi-icon ki-p">🛡</div></div><div class="kpi-val purple" id="plan-pro">0</div><div class="kpi-delta" id="plan-pro-rev">0€/mois</div></div>
         <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Comptes offerts</span><div class="kpi-icon ki-b">🎁</div></div><div class="kpi-val" style="color:#f9a8d4" id="plan-gift">0</div><div class="kpi-delta">Ne comptent pas dans le MRR</div></div>
       </div>
       <div class="card">
@@ -414,9 +414,8 @@ body{font-family:'Geist',system-ui,sans-serif;background:var(--night);color:var(
     <div class="form-group">
       <label class="form-label">Plan</label>
       <select class="form-input" id="edit-plan">
-        <option value="solo">Solo — 29€/mois</option>
-        <option value="pro">Bouclier Pro — 59€/mois</option>
-        <option value="studio">Studio — Sur devis</option>
+        <option value="bouclier">Bouclier — 9€/mois</option>
+        <option value="offert">Offert — 0€/mois</option>
       </select>
     </div>
     <div class="form-group">
@@ -448,9 +447,8 @@ body{font-family:'Geist',system-ui,sans-serif;background:var(--night);color:var(
     <div class="modal-row">
       <div class="form-group"><label class="form-label">Plan</label>
         <select class="form-input" id="add-plan">
-          <option value="solo">Solo</option>
-          <option value="pro">Bouclier Pro</option>
-          <option value="studio">Studio</option>
+          <option value="bouclier">Bouclier — 9€/mois</option>
+          <option value="offert">Offert — 0€/mois</option>
         </select>
       </div>
       <div class="form-group"><label class="form-label">Type d'accès</label>
@@ -561,9 +559,7 @@ function planBadge(plan, type) {
 
 function planMRR(plan, type) {
   if (type === 'offert' || type === 'essai') return 0;
-  if (plan === 'pro') return 59;
-  if (plan === 'studio') return 299;
-  return 29;
+  return 9; // Tout le monde paie 9€/mois
 }
 
 // ── DASHBOARD ──
